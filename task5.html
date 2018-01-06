@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task2</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            background-color: #dedede;
+            font-family: 'Microsoft YaHei';
+            min-width: 750px;
+        }
+        ul li{
+            list-style: none;
+        }
+        .nav {
+            height: 50px;
+            background-color: black;
+        }
+        .navlogo {
+            color: red;
+            float: left;
+        }
+        .nav ul {
+            float: right;
+        }
+        .nav ul li {
+            float: left;
+            line-height: 50px;
+            margin-right: 20px;
+        }
+        .nav ul li a {
+            text-decoration: none;
+            color: #fff;
+        }
+        .article {
+            margin: 30px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 2px 2px 10px;
+            margin-right: 430px;
+        }
+        h3,span {
+            color: #82787f;
+            margin: 10px 0;
+        }
+        p {
+            text-indent:2em;
+            margin-top: 10px;
+        }
+        .article img {
+            margin-top: 10px;
+        }
+        .article ul li {
+            margin-left: 20px;
+        }
+        .article figure {
+            border: 1px solid #999;
+            width: 120px;
+            padding: 10px 0;
+            margin: 20px;
+            display: inline-block;
+        }
+        .article figure img {
+            width: 100px;
+            height: 80px;
+            margin-left: 10px;
+        }
+        .article figure figcaption {
+            text-align: center;
+        }
+        .article ol {
+            margin: 10px 0 10px 40px;
+        }
+        .article table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #cccccc;
+        }
+        .article thead {
+            background-color: black;
+            color: #fff;
+            text-align: left;
+        }
+        .article tfoot {
+            background-color: #ccc;
+        }
+        .article th,td {
+            padding: 2px;
+        }
+        .article .sidebarh2 {
+            font-size: 20px;
+            padding: 5px 10px;
+            border-left: 3px solid #ccc;
+        }
+        .article .formspan {
+            display: inline-block;
+            width: 40%;
+            text-align: right;
+            font-size: 14px;
+            color: black;
+        }
+        .article .formtext {
+            margin-left: 40%;
+            font-size: 12px;
+        }
+        .article textarea {
+            width: 50%;
+            height: 100px;
+            vertical-align: text-top;
+        }
+        .article input[type=submit] {
+            width: 100%;
+            height: 40px;
+            background-color: #3355d0;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        .footer {
+            width: 100%;
+            height: 50px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            line-height: 50px;
+        }
+        .sidebar {
+            width: 350px;
+            float: right;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="nav">
+    <h1 class="navlogo">Bai百度</h1>
+    <ul>
+        <li><a href="#">导航链接一</a></li>
+        <li><a href="#">导航链接二</a></li>
+        <li><a href="#">导航链接三</a></li>
+        <li><a href="#">导航链接四</a></li>
+    </ul>
+</div>
+<div class="article sidebar">
+    <h2 class="sidebarh2">这里是一个侧栏，这是侧栏的标题</h2>
+    <form action="">
+        <label><span class="formspan">请输入邮箱地址&nbsp;&nbsp;</span><input type="text" placeholder="这是一个文本输入框"></label><br>
+        <span class="formtext">邮箱地址请按照要求格式输入</span><br>
+        <label><span class="formspan">请输入密码&nbsp;&nbsp;</span><input type="password" placeholder="这是一个文本输入框"></label><br>
+        <label><span class="formspan">请重复输入密码&nbsp;&nbsp;</span><input type="password" placeholder="这是一个文本输入框"></label><br>
+        <span class="formtext">密码请为6-16位英文数字</span><br>
+        <label><span class="formspan">性别&nbsp;&nbsp;</span><input type="radio" name="sex">男<input type="radio" name="sex">女</label><br>
+        <label><span class="formspan">城市&nbsp;&nbsp;</span><select>
+            <option value="bj">北京</option>
+            <option value="sh">上海</option>
+            <option value="gz">广州</option></select></label><br>
+        <label>
+            <span class="formspan">爱好&nbsp;&nbsp;</span>
+            <input type="checkbox">运动
+            <input type="checkbox">艺术
+            <input type="checkbox">科学
+        </label><br>
+        <label><span class="formspan textareaspan">个人描述&nbsp;&nbsp;</span><textarea placeholder="这是一个多行输入框，输入您的个人描述"></textarea></label><br>
+        <input type="submit" value="确认提交">
+    </form>
+</div>
+<div class="article">
+    <h2>文章一级标题</h2>
+    <h3>文章二级标题</h3>
+    <span>文章作者</span>
+    <span>文章发表时间</span>
+    <p>这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，换行了<br>这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，<a href="#">这里有一个链接</a>这是一个很长很长的段落，这是一个很长很长的段落，<strong>这里有个粗体字</strong>这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落。</p>
+    <img src="image/task1.jpg" alt="">
+    <p>这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，换行了<br>这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，<a href="#">这里有一个链接</a>这是一个很长很长的段落，这是一个很长很长的段落，<strong>这里有个粗体字</strong>这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落。</p>
+</div>
+<div class="article">
+    <h2>另一篇文章一级标题</h2>
+    <h3>文章二级标题</h3>
+    <span>文章作者</span>
+    <span>文章发表时间</span>
+    <p>这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，换行了<br>这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，<a href="#">这里有一个链接</a>这是一个很长很长的段落，这是一个很长很长的段落，<strong>这里有个粗体字</strong>这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落，这是一个很长很长的段落。</p>
+    <img src="image/task1.jpg" alt="">
+    <ul>
+        <li>列表项目一</li>
+        <li>列表项目二</li>
+        <li>列表项目三</li>
+    </ul>
+</div>
+<div class="article">
+    <h2>图片</h2>
+    <figure><figcaption>好看的图片</figcaption><img src="image/task1.jpg" alt=""></figure>
+    <figure><figcaption>好看的图片</figcaption><img src="image/task1.jpg" alt=""></figure>
+    <figure><figcaption>好看的图片</figcaption><img src="image/task1.jpg" alt=""></figure>
+    <figure><figcaption>好看的图片</figcaption><img src="image/task1.jpg" alt=""></figure>
+    <figure><figcaption>好看的图片</figcaption><img src="image/task1.jpg" alt=""></figure>
+    <figure><figcaption>好看的图片</figcaption><img src="image/task1.jpg" alt=""></figure>
+    <figure><figcaption>好看的图片</figcaption><img src="image/task1.jpg" alt=""></figure>
+    <figure><figcaption>好看的图片</figcaption><img src="image/task1.jpg" alt=""></figure>
+    <figure><figcaption>好看的图片</figcaption><img src="image/task1.jpg" alt=""></figure>
+    <figure><figcaption>好看的图片</figcaption><img src="image/task1.jpg" alt=""></figure>
+</div>
+<div class="article">
+    <h2>最后一篇文章一级标题</h2>
+    <h3>文章二级标题</h3>
+    <span>文章作者</span>
+    <span>文章发表时间</span>
+    <ol>
+        <li>排名1</li>
+        <li>排名2</li>
+        <li>排名3</li>
+    </ol>
+    <div>下面是一个表格，给表格加了一个border=“1”好让你看出是一个表格</div>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>表头</th>
+            <th>表头</th>
+            <th>表头</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>表内容单元格</td>
+            <td>表内容单元格</td>
+            <td><a href="#">操作</a></td>
+        </tr>
+        <tr>
+            <td>表内容单元格</td>
+            <td>表内容单元格</td>
+            <td><a href="#">操作</a></td>
+        </tr>
+        <tr>
+            <td>表内容单元格</td>
+            <td>表内容单元格</td>
+            <td><a href="#">操作</a></td>
+        </tr>
+        <tr>
+            <td>表内容单元格</td>
+            <td>表内容单元格</td>
+            <td><a href="#">操作</a></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td>总计</td>
+            <td colspan="2">1000</td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="footer">版权所有&copy;</div>
+</body>
+</html>

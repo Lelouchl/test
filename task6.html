@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task6</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #5d5d5d;
+        }
+        .main {
+            background-color: #fff;
+            box-sizing: border-box;
+            width: 980px;
+            height: 1386px;
+            margin: 0 auto;
+            padding: 0 44px;
+            position: relative;
+        }
+        .head {
+            margin: 0 auto;
+            height: 61px;
+            width: 892px;
+            border-bottom: 2px solid #938e8c;
+        }
+        .head_logo {
+            width: 110px;
+            height: 61px;
+            background-color: #d55d5c;
+        }
+        .head_left {
+            color: #fff;
+            font-size: 12px;
+            margin-top: 43px;
+            margin-left: 5px;
+            float: left;
+        }
+        .head_right {
+            font-size: 12px;
+            color: #d45d5c;
+            float: right;
+            margin-top: 43px;
+        }
+        .middle {
+            margin-top: 44px;
+            overflow: hidden;
+        }
+        .middle_left {
+            width: 641px;
+            height: 301px;
+            position: relative;
+            float: left;
+        }
+        .img_left {
+            width: 191px;
+            height: 301px;
+            background-color: green;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0.2;
+        }
+        .img_right {
+            width: 191px;
+            height: 301px;
+            background-color: red;
+            position: absolute;
+            top: 0;
+            right: 0;
+            opacity: 0.2;
+        }
+        .middle_right {
+            float: right;
+            width: 203px;
+            height: 301px;
+            box-sizing: border-box;
+            border-top: 2px solid #cc8091;
+            position: relative;
+        }
+        .about,.technologe {
+            font-size: 24px;
+            font-family: "Microsoft Yahei";
+            line-height: 40px;
+            color: #000;
+            text-decoration: underline;
+            font-variant: small-caps;
+            text-transform: capitalize;
+        }
+        .abou_t {
+            font-size: 12px;
+            color: #676767;
+            font-family: "楷体";
+            line-height: 10px;
+            font-style: oblique;
+        }
+        .seven {
+            color: #75b86b;
+            font-size: 116px;
+            font-family: "Microsoft Yahei";
+            font-style: oblique;
+            margin-left: -20px;
+        }
+        .num {
+            font-size: 55px;
+            color: #cc8091;
+            font-family: "Microsoft Yahei";
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+        }
+        .text_1 {
+            font-size: 21px;
+            color: #cc8091;
+            font-family: "Microsoft Yahei";
+            position: absolute;
+            bottom: 10px;
+            left: 85px;
+        }
+        .text_2 {
+            font-size: 12px;
+            color: #ccc;
+            font-family: "Microsoft Yahei";
+            position: absolute;
+            bottom: 0;
+            left: 85px;
+        }
+        .middle_text {
+            margin-top: 44px;
+            overflow: hidden;
+        }
+        .what {
+            float: left;
+            width: 230px;
+            margin-right: 20px;
+        }
+        .what span {
+            line-height: 28px;
+            color: #418c59;
+            text-decoration: underline;
+            font-weight: bold;
+            font-family: "Microsoft Yahei";
+            font-size: 16px;
+        }
+        .what p {
+            font-size: 12px;
+            color: #767777;
+            line-height: 16px;
+            font-family: "宋体";
+        }
+        .when {
+            float: left;
+            width: 210px;
+            margin-right: 20px;
+        }
+        .when span {
+            font-size: 16px;
+            line-height: 28px;
+            color: #d2994f;
+            text-decoration: underline;
+            font-weight: bold;
+            font-family: "Microsoft Yahei";
+        }
+        .when p {
+            font-size: 12px;
+            color: #231815;
+            line-height: 16px;
+            font-family: "Microsoft Yahei";
+            opacity: 0.7;
+        }
+        .how {
+            float: left;
+            width: 140px;
+        }
+        .how span {
+            font-size: 16px;
+            line-height: 28px;
+            color: #cc7680;
+            text-decoration: underline;
+            font-weight: bold;
+            font-family: "Microsoft Yahei";
+        }
+        .how p {
+            font-size: 12px;
+            color: #231815;
+            line-height: 16px;
+            font-family: "Microsoft Yahei";
+            margin-bottom: 50px;
+        }
+        .how ul li {
+            list-style: none;
+            font-size: 12px;
+            color: #231815;
+            line-height: 16px;
+            font-family: "Microsoft Yahei";
+        }
+        .how ul li span {
+            font-size: 12px;
+            color: #cd4a48;
+            font-style: oblique;
+            line-height: 16px;
+            opacity: 0.7;
+            text-decoration: none;
+        }
+        .bottom {
+            margin-top: 44px;
+            overflow: hidden;
+        }
+        .bottom_left {
+            width: 415px;
+            float: left;
+        }
+        .bottom_left_top {
+            border-bottom: 2px solid #11456b;
+            padding-bottom: 10px;
+        }
+        .bottom .the {
+            font-size: 72px;
+            color: #f5e327;
+            font-family: "黑体";
+            font-weight: bold;
+            font-style: oblique;
+        }
+        .bottom_left_top p {
+            font-size: 42px;
+            line-height: 50px;
+            color: #11456b;
+        }
+        .bottom_left_bottom {
+            margin-top: 30px;
+        }
+        .bottom_left_bottom p {
+            font-size: 12px;
+            color: #767777;
+            font-family: "宋体";
+            line-height: 16px;
+        }
+        .bottom_first:first-letter {
+            font-size: 70px;
+            color: #f5e327;
+            float: left;
+            line-height: 70px;
+            font-family: "Microsoft Yahei";
+        }
+        .bottom_second {
+            text-indent: 2em;
+        }
+        .pic_2 {
+            float: right;
+            margin: 0px 10px 0px 0px;
+        }
+        .bottom_right {
+            width: 458px;
+            float: right;
+            position: relative;
+        }
+        .pic3 {
+            position: relative;
+        }
+        .pic3_text {
+            width: 458px;
+            height: 61px;
+            background-color: #000;
+            opacity: 0.6;
+            position: absolute;
+            bottom: 4px;
+        }
+        .pic3_text p {
+            color: #fff;
+            font-size: 26px;
+            font-family: "Microsoft Yahei";
+            margin-left: 50px;
+            border-left: 3px solid #72b16a;
+            line-height: 40px;
+            margin-top: 10px;
+            text-indent: 0.5em;
+        }
+        .pic3_text p span {
+            font-size: 12px;
+            font-style: oblique;
+            color: #72b16a;
+            margin-left: 10px;
+        }
+        .bottom_right_text {
+            margin-top: 30px;
+            width: 458px;
+            height: 340px;
+            background-color: #eeeed6;
+            position: relative;
+        }
+        .bottom_right_text1 ul li {
+            font-size: 16px;
+            color: #5a5b5b;
+            font-family: "宋体";
+            text-align: left;
+            margin-left: 50px;
+            padding-top: 20px;
+            list-style: none;
+        }
+        .bottom_right_text1 ul li span {
+            font-size: 12px;
+            font-style: oblique;
+            text-align: right;
+            line-height: 20px;
+            color: #5a5b5b;
+        }
+        .triangle {
+            width: 0;
+            height: 0;
+            border-right: 5px solid transparent;
+            border-bottom: 8px solid #10446b;
+            border-left: 5px solid transparent;
+            position: relative;
+            top: -11px;
+            left: -12px;
+        }
+        .bottom_right_text2 {
+            width: 260px;
+            height: 160px;
+            background-color: #d55d5c;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        .zero {
+            float: left;
+            font-size: 110px;
+            color: #ffffff;
+            font-family: "Microsoft Yahei";
+            border-right: 2px solid #fff;
+            line-height: 86px;
+            margin: 37px 10px;
+        }
+        .nums {
+            font-size: 21px;
+            font-family: "黑体";
+            font-style: oblique;
+            line-height: 24px;
+            color: #fff;
+            margin-top: 40px;
+        }
+        .hello {
+            font-size: 12px;
+            color: #fff;
+            font-family: "黑体";
+            line-height: 10px;
+        }
+        .bottom_right_text3 {
+            font-size: 14px;
+            color: #5a5b5b;
+            font-family: "黑体";
+            font-style: oblique;
+            line-height: 16px;
+            text-indent: 3em;
+            height: 160px;
+            width: 178px;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            margin-right: 10px;
+        }
+        .bottom_right_text3 span {
+            font-size: 72px;
+            color: #d45d5c;
+            font-family: "黑体";
+            line-height: 30px;
+        }
+        .yi_left {
+            position: absolute;
+            bottom: 120px;
+            right: 145px;
+            font-style: normal;
+        }
+        .yi_right {
+            position: absolute;
+            bottom: 45px;
+            right: -22px;
+            font-style: normal;
+        }
+        .footer {
+            width: 892px;
+            height: 40px;
+            border-top: 1px solid #938e8c;
+            position: absolute;
+            bottom: 0;
+        }
+        .footer span {
+            font-size: 12px;
+            color: #d45d5c;
+            font-family: "黑体";
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="head">
+        <span class="head_right">2016.03</span>
+        <div class="head_logo"><span class="head_left">ife.baidu.com</span></div>
+    </div>
+    <div class="middle">
+        <div class="middle_left">
+            <img src="image/task6-1.png" class="middle_img">
+            <div class="img_left"></div>
+            <div class="img_right"></div>
+        </div>
+        <div class="middle_right">
+            <p class="about">about</p>
+            <p class="technologe">technologe</p>
+            <p class="abou_t">About technologe about technologe about technologe</p>
+            <p class="seven">700</p>
+            <p class="num">3.2</p>
+            <p class="text_1">CSS</p>
+            <p class="text_2">cssssccsccscssc</p>
+        </div>
+    </div>
+    <div class="middle_text">
+        <div class="what">
+            <span>What</span>
+            <p>前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端</p>
+        </div>
+        <div class="when">
+            <span>When</span>
+            <p>前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端端前端前端前端前端前端前端</p>
+        </div>
+        <div class="how">
+            <span>How</span>
+            <p>前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前</p>
+            <ul>
+                <li>What--------<span>40%</span></li>
+                <li>What--------<span>30%</span></li>
+                <li>What--------<span>30%</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="bottom_left">
+            <div class="bottom_left_top">
+                <p>
+                    <span class="the">THE</span>
+                    TECHNOLOGE OF FRONT
+                </p>
+                <p>
+                    <span class="front">前端技术领域</span>
+                </p>
+            </div>
+            <div class="bottom_left_bottom">
+                <p class="bottom_first">前端前端前前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前</p>
+                <img src="image/task6-2.png" class="pic_2">
+                <p>前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端</p>
+                <p class="bottom_second">前端前端前端前端前端前端前端前端前端端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端</p>
+                <p class="bottom_second">端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端</p>
+            </div>
+        </div>
+        <div class="bottom_right">
+            <div class="pic3">
+                <img src="image/task6-3.png" alt="">
+                <div class="pic3_text">
+                    <p>前端技术<span>前端技术前端技术</span></p>
+                </div>
+            </div>
+            <div class="bottom_right_text">
+                <div class="bottom_right_text1">
+                    <ul>
+                        <li><span class="triangle"></span>前端前端前端前端前端前端 ....................<span>前端</span></li>
+                        <li><span class="triangle"></span>前端前端前端前端 ...........................<span>端前端</span></li>
+                        <li><span class="triangle"></span>前端前端前端前端前端前端前端 ................<span>前端</span></li>
+                    </ul>
+                </div>
+                <div class="bottom_right_text2">
+                    <p class="zero">0</p>
+                    <p class="nums">ONE TWO<br>THREE FOUR FIVE</p>
+                    <p class="hello">hello world hello world<br>hello world
+                    </p>
+                </div>
+                <div class="bottom_right_text3">
+                    <p><span class="yi_left">“</span>world hello world world hello world hello world hello world hello world hello world hello world hello<span class="yi_right">”</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <span>ife.baidu.com</span>
+    </div>
+</div>
+</body>
+</html>

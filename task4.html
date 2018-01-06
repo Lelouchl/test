@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task4</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .main {
+            background-color: #ccc;
+            width: 400px;
+            height: 200px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+        .left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #fc0;
+            width: 50px;
+            height: 50px;
+            border-radius: 0 0 50px 0;
+        }
+        .right {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            background-color: #fc0;
+            width: 50px;
+            height: 50px;
+            border-radius: 50px 0 0 0;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="left"></div>
+    <div class="right"></div>
+</div>
+</body>
+</html>
