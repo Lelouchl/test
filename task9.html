@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task9</title>
+    <style>
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,
+        form,fieldset,input,textarea,p,blockquote,th,td {
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            list-style: none;
+        }
+        a {
+            text-decoration: none;
+        }
+        body {
+            min-width: 1420px;
+            font-family: "Microsoft YaHei";
+            font-size: 14px;
+        }
+        .nav {
+            height: 60px;
+            background-color: #2189bf;
+            padding: 0 80px;
+        }
+        .nav .logo img {
+            margin-top: 12px;
+            float: left;
+        }
+        .nav .search {
+            height: 60px;
+            float: right;
+            line-height: 60px;
+        }
+        .nav .search input {
+            width: 350px;
+            height: 30px;
+            border-radius: 20px;
+            outline: none;
+            border: none;
+            background: #fff url("task9/zoom.png") no-repeat 17px 7px;
+            padding-left: 50px;
+        }
+        .nav .search a {
+            color: #fff;
+            font-size: 14px;
+            padding-left: 40px;
+            background: url("task9/login.png") no-repeat 18px;
+        }
+        .main .left {
+            height: 1300px;
+            width: 20%;
+            background-color: #2a2e3d;
+            float: left;
+        }
+        .main .left .top {
+            height: 140px;
+            padding: 18px 0 0 32px;
+        }
+        .main .left .top .user {
+            overflow: hidden;
+        }
+        .main .left .top .user>div {
+            border: 1px solid #b9babd;
+            height: 55px;
+            width: 55px;
+            border-radius: 50%;
+            margin: 5px 20px 10px 30px;
+            line-height: 55px;
+            text-align: center;
+            font-size: 0;
+            float: left;
+        }
+        .main .left .top .user>div span {
+            display: inline-block;
+            width: 47px;
+            height: 47px;
+            border-radius: 50%;
+            background-color: #b9babd;
+            vertical-align: middle;
+        }
+        .main .left .top .user p {
+            float: left;
+            line-height: 65px;
+            color: #ecebec;
+            font-size: 16px;
+        }
+        .main .left .top .nums {
+            margin-top: 30px;
+        }
+        .main .left .top .nums ul li {
+            width: 100px;
+            text-align: center;
+            color: #67778b;
+            font-size: 14px;
+            line-height: 16px;
+            float: left;
+        }
+        .main .left .top .nums ul>li:hover {
+            color: #d45d5c;
+            cursor: pointer;
+        }
+        .main .left .top .nums ul li:first-of-type {
+            border-right: 2px solid #67778b;
+        }
+        .main .left .list .cur {
+            background-color: #383d4e;
+            line-height: 20px;
+        }
+        .main .left .list>li {
+            padding-left: 50px;
+            min-height: 36px;
+            line-height: 36px;
+        }
+        .main .left .list ul {
+            padding-left: 25px;
+        }
+        .main .left .list li {
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+        .main .left .list li.open>a {
+            color: #ededf0;
+        }
+        .main .left .list li.select>a {
+            color: #ededf0;
+        }
+        .main .left .list li a {
+            display: inline-block;
+            height: 20px;
+            line-height: 20px;
+            color: #6e8096;
+        }
+        .main .left .list .cur>a {
+            color: #ededf0;
+        }
+        .main .left .list>li>a>i {
+            margin-right: 13px;
+        }
+        i.file_open {
+            background: url("task9/file_open.png") no-repeat center;
+        }
+        i.arrow {
+            background: url("task9/close_arrow.png") no-repeat center;
+            margin-right: 7px;
+        }
+        i.arrow_cur {
+            background: url("task9/open_arrow.png") no-repeat center;
+            margin-right: 7px;
+        }
+        i.doc_open {
+            background: url("task9/doc_open.png") no-repeat center;
+            margin-right: 5px;
+        }
+        i.doc_close {
+            background: url("task9/doc_close.png") no-repeat center;
+            margin-right: 5px;
+        }
+        i.file_cur {
+            background: url("task9/file_cur.png") no-repeat center;
+            margin-right: 5px;
+        }
+        i.file_close {
+            background: url("task9/file_close.png") no-repeat center;
+            margin-right: 5px;
+        }
+        i.star {
+            background: url("task9/star.png") no-repeat center;
+        }
+        i.share {
+            background: url("task9/share.png") no-repeat center;
+        }
+        i.user_info {
+            background: url("task9/user_info.png") no-repeat center;
+        }
+        .main .left .list>li:hover {
+            cursor: pointer;
+            background-color: #383d4e;
+        }
+        .main .left .list i {
+            width: 12px;
+            height: 12px;
+            float: left;
+            position: relative;
+            top: 4px;
+        }
+        .main .right {
+            background-color: #eeeeed;
+            height: 1300px;
+            width: 80%;
+            min-width: 1135px;
+            float: left;
+        }
+        .main .right .top {
+            height: 40px;
+            background-color: #fff;
+            line-height: 40px;
+            padding-left: 30px;
+            color: #aaa;
+        }
+        .main .right .top a {
+            color: #aaa;
+            margin: 0 10px;
+        }
+        .main .right .top a:hover {
+            color: #2189bf;
+        }
+        .bottom {
+            padding: 0 70px;
+        }
+        .main1 {
+            border: 1px solid #dddfe1;
+            height: 80px;
+            background-color: #fff;
+            margin-top: 20px;
+            padding-top: 15px;
+            padding-left: 30px;
+        }
+        .main1 .select1 {
+            height: 70px;
+            float: left;
+        }
+        .main1 form span {
+            color: #aaa;
+            line-height: 26px;
+            padding-right: 10px;
+        }
+        .main1 select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            border: 1px solid #cacbcb;
+            height: 25px;
+            line-height: 23px;
+            padding-left: 5px;
+            cursor: pointer;
+            background: url("task9/black_arrow.png") no-repeat 90% 10px;
+            outline: none;
+            color: black;
+        }
+        .main1 .select1 select {
+            width: 75px;
+        }
+        .main1 .select2 {
+            float: left;
+            width: 250px;
+            padding-left: 30px;
+        }
+        .main1 .select2>div {
+            width: 180px;
+            float: left;
+        }
+        .main1 .select2 select {
+            width: 135px;
+            margin-bottom: 5px;
+        }
+        .main1 .select2>a {
+            float: left;
+            background: url("task9/change.png") no-repeat center;
+            line-height: 60px;
+            width: 15px;
+            padding-left: 15px;
+            color: #fff;
+        }
+        .main1 .select3 {
+            float: left;
+            width: 400px;
+        }
+        .main1 .select3 .sel1 {
+            width: 150px;
+            margin-right: 20px;
+            margin-bottom: 5px;
+        }
+        .main1 .select3 .sel2 {
+            width: 100px;
+            margin-right: 20px;
+        }
+        .main1 .select3 .sel3 {
+            width: 100px;
+            margin-right: 20px;
+        }
+        .main1 .select3 .sel4 {
+            width: 150px;
+        }
+        .main1>form>input {
+            border: none;
+            background-color: #2189bf;
+            height: 30px;
+            color: #fff;
+            width: 60px;
+            margin-top: 15px;
+        }
+        .main2 {
+            margin-top: 10px;
+            height: 80px;
+        }
+        .m2_left {
+            float: left;
+            width: 848px;
+        }
+        .m2_left button {
+            height: 80px;
+            width: 50px;
+            background-color: #fff;
+            border: 1px solid #dddfe1;
+            font-size: 30px;
+            color: #999;
+            float: left;
+            cursor: pointer;
+        }
+        .m2_left ul {
+            height: 80px;
+            float: left;
+        }
+        .m2_left ul li {
+            cursor: pointer;
+            float: left;
+            box-sizing: border-box;
+            background-color: #fff;
+            width: 113px;
+            height: 80px;
+            border: 1px solid #dddfe1;
+            margin: 0 5px;
+        }
+        .m2_left ul li:first-of-type {
+            border-top: 4px solid #2189bf;
+        }
+        .m2_left ul li:hover {
+            border-top: 4px solid #2189bf;
+        }
+        .m2_left ul li>span {
+            text-align: center;
+            width: 113px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .m2_left ul li>p {
+            color: #999;
+            font-size: 16px;
+            text-align: center;
+            margin-top: 8px;
+        }
+        .m2_left ul li>p>span {
+            font-size: 24px;
+            color: #ec6602;
+        }
+        .m2_right {
+            width: 150px;
+            height: 80px;
+            border: 1px solid #dddfe1;
+            box-sizing: border-box;
+            float: right;
+            line-height: 80px;
+            background: #fff url("task9/history.png") no-repeat 18px 22px;
+            cursor: pointer;
+        }
+        .m2_right>a {
+            margin-left: 60px;
+            color: black;
+        }
+        .main3 {
+            height: 120px;
+            margin-top: 30px;
+        }
+        .main3>p {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        .main3 ul li {
+            width: 22%;
+            float: left;
+            box-sizing: border-box;
+            background-color: #fff;
+            margin-right: 4%;
+            border: 1px solid #dddfe1;
+            height: 90px;
+            position: relative;
+        }
+        .main3 ul li>p {
+            margin-top: 20px;
+            margin-left: 10px;
+        }
+        .main3 ul li>span {
+            display: inline-block;
+            margin-top: 8px;
+            margin-left: 10px;
+            font-size: 12px;
+            color: #999;
+        }
+        .main3 ul li::after {
+            content: "";
+            width: 60px;
+            height: 50px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .main3 ul li:first-of-type::after {
+            background-color: #43b29d;
+        }
+        .main3 ul li:nth-of-type(2)::after {
+            background-color: #388ac1;
+        }
+        .main3 ul li:nth-of-type(3)::after {
+            background-color: #d04b36;
+        }
+        .main3 ul li:last-of-type::after {
+            background-color: #e2cd46;
+        }
+        .main3 ul li:first-of-type {
+            border-left: 4px solid #43b29d;
+        }
+        .main3 ul li:nth-of-type(2) {
+            border-left: 4px solid #388ac1;
+        }
+        .main3 ul li:nth-of-type(3) {
+            border-left: 4px solid #d04b36;
+        }
+        .main3 ul li:last-of-type {
+            margin-right: 0;
+            border-left: 4px solid #e2cd46;
+        }
+        .main4 {
+            height: 400px;
+            margin-top: 20px;
+        }
+        .m4_left {
+            background-color: #fff;
+            width: 64%;
+            height: 400px;
+            float: left;
+            border: 1px solid #dddfe1;
+            border-radius: 10px;
+        }
+        .m4_left>p {
+            height: 50px;
+            background-color: #f4f5f7;
+            border-radius: 10px 10px 0 0;
+            border-bottom: 1px solid #dddfe1;
+            line-height: 50px;
+            padding-left: 20px;
+            color: #999;
+        }
+        .m4_left>ul {
+            height: 35px;
+            padding-top: 25px;
+            margin-left: 50px;
+            position: relative;
+        }
+        .m4_left>ul li {
+            float: left;
+            margin-right: 3px;
+        }
+        .m4_left>ul li input {
+            display: none;
+        }
+        .m4_left>ul li div {
+            display: none;
+        }
+        .m4_left>ul li>label {
+            cursor: pointer;
+            display: block;
+            width: 90px;
+            height: 30px;
+            border: 1px solid #ededf0;
+            border-bottom: none;
+            background-color: #ededf0;
+            border-radius: 5px 5px 0 0;
+            color: #535353;
+            text-align: center;
+            line-height: 30px;
+        }
+        .m4_left table {
+            text-align: center;
+            line-height: 30px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .m4_left [id^='tab']:checked~label {
+            position: relative;
+            border: 1px solid #cacbcb;
+            border-bottom: none;
+            background-color: #fff;
+            z-index: 1;
+        }
+        .m4_left [id^='tab']:checked ~ [class^='tab'] {
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 55px;
+            width: 450px;
+            border: 1px solid #cacbcb;
+            border-radius: 0 5px 5px 5px;
+            padding: 35px 40px;
+        }
+        .m4_right {
+            float: right;
+            height: 400px;
+            width: 35%;
+            background-color: #fff;
+            border: 1px solid #dddfe1;
+            border-radius: 10px;
+        }
+        .m4_right>p {
+            height: 50px;
+            background-color: #f4f5f7;
+            border-radius: 10px 10px 0 0;
+            border-bottom: 1px solid #dddfe1;
+            line-height: 50px;
+            padding-left: 20px;
+            color: #999;
+        }
+        .m4_right>div {
+            margin-left: 30px;
+            padding-left: 15px;
+            padding-bottom: 10px;
+        }
+        .m4_right>div:first-of-type {
+            margin-top: 20px;
+            border-bottom: 1px solid #e7e7e7;
+            margin-right: 30px;
+        }
+        .m4_right>div:nth-of-type(2) {
+            overflow: hidden;
+            border-bottom: 1px solid #e7e7e7;
+            padding-bottom: 0;
+        }
+        .m4_right>div:nth-of-type(2)>div {
+            float: left;
+        }
+        .m4_right>div:nth-of-type(2)>div p {
+            margin-bottom: 10px;
+        }
+        .m4_right>div:nth-of-type(2)>div:first-of-type {
+            width: 100px;
+            border-right: 1px solid #e7e7e7;
+        }
+        .m4_right>div:nth-of-type(2)>div:last-of-type {
+            padding-left: 15px;
+        }
+        .m4_right>div:nth-of-type(3) {
+            height: 120px;
+            border-bottom: 1px solid #e7e7e7;
+            margin-right: 30px;
+        }
+        .m4_right>div:nth-of-type(4) {
+            padding-left: 0;
+            padding-right: 30px;
+        }
+        .m4_right>div:nth-of-type(4) label {
+            line-height: 40px;
+            display: inline-block;
+        }
+        .m4_right>div:nth-of-type(4) input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 15px;
+            height: 15px;
+            background-color: #d5d5d5;
+            outline: none;
+            cursor: pointer;
+            margin-right: 5px;
+            vertical-align: sub;
+        }
+        .m4_right>div:nth-of-type(4) input[type="checkbox"]:checked {
+            background: #d5d5d5 url("task9/gou.png") no-repeat center;
+        }
+        .m4_right>div:nth-of-type(4) input[type="submit"] {
+            float: right;
+            width: 60px;
+            height: 30px;
+            border: none;
+            background-color: #2189bf;
+            border-radius: 5px;
+            color: #fff;
+            margin-top: 10px;
+        }
+        .m4_right>div span {
+            color: #c3c2c2;
+            margin: 5px 0;
+            display: inline-block;
+        }
+        .main5 {
+            height: 400px;
+            margin-top: 20px;
+        }
+        .m5_left {
+            background-color: #fff;
+            width: 410px;
+            height: 420px;
+            float: left;
+            border: 1px solid #dddfe1;
+            border-radius: 10px;
+        }
+        .m5_left>p,.m5_right>p {
+            height: 50px;
+            background-color: #f4f5f7;
+            border-radius: 10px 10px 0 0;
+            border-bottom: 1px solid #dddfe1;
+            line-height: 50px;
+            padding-left: 20px;
+            color: #999;
+        }
+        .m5_left .select_time {
+            margin: 10px 20px;
+            border-bottom: 1px solid #2189bf;
+            padding-bottom: 10px;
+            height: 30px;
+        }
+        .m5_left .select_time select{
+            float: left;
+            height: 30px;
+            border: 1px solid #cacbcb;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            outline: none;
+            padding-left: 10px;
+            width: 90px;
+            margin-right: 10px;
+            background: url("task9/select_down.png") no-repeat 90% 12px;
+        }
+        .m5_left .select_time input {
+            float: right;
+            height: 30px;
+            border: 1px solid #cacbcb;
+            background-color: #fff;
+            width: 68px;
+        }
+        .m5_left .week {
+            margin: 0 20px;
+            height: 30px;
+            border-bottom: 1px solid #cacbcb;
+        }
+        .m5_left .week ul li {
+            width: 14.28%;
+            float: left;
+            text-align: center;
+        }
+        .m5_left .day {
+            margin: 0 20px;
+            margin-top: 10px;
+        }
+        .m5_left .day ul li {
+            float: left;
+            width: 47.7px;
+            height: 47px;
+            border: 1px solid #fff;
+            box-sizing: border-box;
+            text-align: center;
+            line-height: 22px;
+            margin-bottom: 2px;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+        .m5_left .day ul li:hover {
+            border: 1px solid #f5c21d;
+        }
+        .m5_left .day .holiday,.m5_left .day li:nth-of-type(7n) span,.m5_left .day li:nth-of-type(7n+6) span {
+            color: #cd3539;
+        }
+        .m5_left .day .make {
+            border: 1px solid #f5c21d;
+        }
+        .m5_right {
+            float: right;
+            height: 420px;
+            width: 58%;
+            background-color: #fff;
+            border: 1px solid #dddfe1;
+            border-radius: 10px;
+        }
+        .m5_right>div {
+            margin-top: 20px;
+        }
+        .m5_right>div table {
+            width: 500px;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        .m5_right>div table tr {
+            height: 30px;
+        }
+        .m5_right>div table tr:nth-of-type(n+2):hover {
+            background-color: #f4f5f7;
+            cursor: pointer;
+        }
+        .m5_right>div table tr th:nth-of-type(3) {
+            text-align: left;
+            padding-left: 30px;
+            position: relative;
+        }
+        .m5_right>div table tr th>span {
+            float: left;
+        }
+        .m5_right>div table tr th>div {
+            position: absolute;
+            right: 20px;
+            width: 180px;
+            height: 4px;
+            background-color: #dcdcdc;
+            margin-top: 7px;
+        }
+        .m5_right>div table tr th>div>p {
+            height: 4px;
+        }
+        .m5_right>div table tr:nth-of-type(2) th>div>p {
+            width: 81.5%;
+            background-color: #ed6d51;
+        }
+        .m5_right>div table tr:nth-of-type(3) th>div>p {
+            width: 48.8%;
+            background-color: #ee7e4d;
+        }
+        .m5_right>div table tr:nth-of-type(4) th>div>p {
+            width: 38.5%;
+            background-color: #f09d4d;
+        }
+        .m5_right>div table tr:nth-of-type(5) th>div>p {
+            width: 38.1%;
+            background-color: #7ecaf0;
+        }
+        .m5_right>div table tr:nth-of-type(6) th>div>p {
+            width: 37.2%;
+            background-color: #7ec9f1;
+        }
+        .m5_right>div table tr:nth-of-type(7) th>div>p {
+            width: 35.7%;
+            background-color: #7ec9f1;
+        }
+        .m5_right>div table tr:nth-of-type(8) th>div>p {
+            width: 33.5%;
+            background-color: #7ec9f1;
+        }
+        .m5_right>div table tr:nth-of-type(9) th>div>p {
+            width: 32.8%;
+            background-color: #7ec9f1;
+        }
+        .m5_right>div table tr:nth-of-type(10) th>div>p {
+            width: 31.9%;
+            background-color: #7ec9f1;
+        }
+        .m5_right>div table tr:nth-of-type(11) th>div>p {
+            width: 30.9%;
+            background-color: #7ec9f1;
+        }
+    </style>
+</head>
+<body>
+<div class="nav">
+    <div class="logo">
+        <img src="task9/logo.png" alt="">
+    </div>
+    <div class="search">
+        <input type="text">
+        <a href="#">登录</a>
+    </div>
+</div>
+<div class="main">
+    <div class="left">
+        <div class="top">
+            <div class="user">
+                <div><span></span></div>
+                <p>ABC123</p>
+            </div>
+            <div class="nums">
+                <ul>
+                    <li>
+                        <p>110</p>
+                        <p>收藏</p>
+                    </li>
+                    <li>
+                        <p>313</p>
+                        <p>粉丝</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <ul class="list">
+            <li class="cur">
+                <a href="#"><i class="file_open"></i>个人报表</a>
+                <ul>
+                    <li>
+                        <a href="#">
+                            <i class="arrow"></i>
+                            <i class="file_close"></i>
+                            文件一
+                        </a>
+                    </li>
+                    <li class="open">
+                        <a href="#">
+                            <i class="arrow_cur"></i>
+                            <i class="file_cur"></i>
+                            文件二
+                        </a>
+                        <ul>
+                            <li class="select">
+                                <a href="#">
+                                    <i class="doc_open"></i>
+                                    文档1
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="doc_close"></i>
+                                    文档1
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="arrow"></i>
+                            <i class="file_close"></i>
+                            文件三
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="star"></i>
+                    个人收藏
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="share"></i>
+                    我的分享
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="star"></i>
+                    图库
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="star"></i>
+                    成长记录
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="user_info"></i>
+                    账户信息
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="right">
+        <div class="top">
+            <a href="#">C站</a>/
+            <a href="#">个人报表</a>/
+            <a href="#">文件一</a>/
+            <a href="#">文档一</a>
+        </div>
+        <div class="bottom">
+            <div class="main1">
+                <form action="">
+                    <div class="select1">
+                        <span>查询项</span>
+                        <select name="">
+                            <option>第一项</option>
+                        </select>
+                    </div>
+                    <div class="select2">
+                        <div>
+                            <span>买方</span>
+                            <select name="">
+                                <option>小A</option>
+                            </select>
+                            <span>卖方</span>
+                            <select name="">
+                                <option>小C</option>
+                            </select>
+                        </div>
+                        <a href="#">换</a>
+                    </div>
+                    <div class="select3">
+                        <span>日期</span>
+                        <select class="sel1">
+                            <option>2016-04-01</option>
+                        </select>
+                        <span>总耗时</span>
+                        <select class="sel2">
+                            <option>8 天</option>
+                        </select>
+                        <span>人数</span>
+                        <select class="sel3">
+                            <option>10 人</option>
+                        </select>
+                        <span>成交项</span>
+                        <select class="sel4">
+                            <option>10 项</option>
+                        </select>
+                    </div>
+                    <input type="submit" value="搜索">
+                </form>
+            </div>
+            <div class="main2">
+                <div class="m2_left">
+                    <button>&lt;</button>
+                    <ul>
+                        <li>
+                            <span>10:00 am</span>
+                            <p>¥<span>1200</span></p>
+                        </li>
+                        <li>
+                            <span>11:00 am</span>
+                            <p>¥<span>1300</span></p>
+                        </li>
+                        <li>
+                            <span>12:00 am</span>
+                            <p>¥<span>1200</span></p>
+                        </li>
+                        <li>
+                            <span>01:00 pm</span>
+                            <p>¥<span>1400</span></p>
+                        </li>
+                        <li>
+                            <span>02:00 pm</span>
+                            <p>¥<span>1500</span></p>
+                        </li>
+                        <li>
+                            <span>03:00 pm</span>
+                            <p>¥<span>1800</span></p>
+                        </li>
+                    </ul>
+                    <button>&gt;</button>
+                </div>
+                <div class="m2_right">
+                    <a href="#">历史查询</a>
+                </div>
+            </div>
+            <div class="main3">
+                <p>2016年4月份统计</p>
+                <div>
+                    <ul>
+                        <li><p>133311</p><span>成交量</span></li>
+                        <li><p>133311</p><span>成交量</span></li>
+                        <li><p>133311</p><span>成交量</span></li>
+                        <li><p>133311</p><span>成交量</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="main4">
+                <div class="m4_left">
+                    <p>第一组项目</p>
+                    <ul>
+                        <li>
+                            <input type="radio" id="tab1" checked name="tabs">
+                            <label for="tab1">项目一</label>
+                            <div class="tab1">
+                                <table border="1" bordercolor="#ddd">
+                                    <tbody>
+                                        <tr>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                        </tr>
+                                        <tr>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                        </tr>
+                                        <tr>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                        </tr>
+                                        <tr>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                        </tr>
+                                        <tr>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                        </tr>
+                                        <tr>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                            <td>购买材料一</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li>
+                            <input type="radio" id="tab2" name="tabs">
+                            <label for="tab2">项目一</label>
+                            <div class="tab2">
+                                <table border="1" bordercolor="#ddd">
+                                    <tbody>
+                                    <tr>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                        <td>购买材料二</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li>
+                            <input type="radio" id="tab3" name="tabs">
+                            <label for="tab3">项目一</label>
+                            <div class="tab3">
+                                <table border="1" bordercolor="#ddd">
+                                    <tbody>
+                                    <tr>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                        <td>购买材料三</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li>
+                            <input type="radio" id="tab4" name="tabs">
+                            <label for="tab4">项目一</label>
+                            <div class="tab4">
+                                <table border="1" bordercolor="#ddd">
+                                    <tbody>
+                                    <tr>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                        <td>购买材料四</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li>
+                            <input type="radio" id="tab5" name="tabs">
+                            <label for="tab5">项目一</label>
+                            <div class="tab5">
+                                <table border="1" bordercolor="#ddd">
+                                    <tbody>
+                                    <tr>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                    </tr>
+                                    <tr>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                        <td>购买材料五</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="m4_right">
+                    <p>第一组项目</p>
+                    <div>
+                        <span>标题</span>
+                        <p>项目报表三</p>
+                    </div>
+                    <div>
+                        <div>
+                            <span>价格</span>
+                            <p>¥ 158</p>
+                        </div>
+                        <div>
+                            <span>负责人</span>
+                            <p>小A</p>
+                        </div>
+                    </div>
+                    <div>
+                        <span>详细描述</span>
+                        <p>该项目目前负责人是......</p>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="checkbox" checked>
+                            <span>遵守保密协议</span>
+                        </label>
+                        <input type="submit" value="搜索">
+                    </div>
+                </div>
+            </div>
+            <div class="main5">
+                <div class="m5_left">
+                    <p>日历</p>
+                    <div class="select_time">
+                        <select>
+                            <option>2016年</option>
+                        </select>
+                        <select>
+                            <option>4月</option>
+                        </select>
+                        <select>
+                            <option>标注日期</option>
+                        </select>
+                        <input type="submit" value="返回今天">
+                    </div>
+                    <div class="week">
+                        <ul>
+                            <li>一</li>
+                            <li>二</li>
+                            <li>三</li>
+                            <li>四</li>
+                            <li>五</li>
+                            <li>六</li>
+                            <li>日</li>
+                        </ul>
+                    </div>
+                    <div class="day">
+                        <ul>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li>
+                                <span>1</span>
+                                <p class="holiday">愚人节</p>
+                            </li>
+                            <li>
+                                <span>2</span>
+                                <p>廿五</p>
+                            </li>
+                            <li>
+                                <span>3</span>
+                                <p>廿六</p>
+                            </li>
+                            <li>
+                                <span>4</span>
+                                <p>廿七</p>
+                            </li>
+                            <li>
+                                <span>5</span>
+                                <p class="holiday">清明</p>
+                            </li>
+                            <li>
+                                <span>6</span>
+                                <p>廿九</p>
+                            </li>
+                            <li>
+                                <span>7</span>
+                                <p>三月</p>
+                            </li>
+                            <li>
+                                <span>8</span>
+                                <p>初二</p>
+                            </li>
+                            <li class="make">
+                                <span>9</span>
+                                <p>初三</p>
+                            </li>
+                            <li>
+                                <span>10</span>
+                                <p>初四</p>
+                            </li>
+                            <li>
+                                <span>11</span>
+                                <p>初五</p>
+                            </li>
+                            <li class="make">
+                                <span>12</span>
+                                <p>初六</p>
+                            </li>
+                            <li>
+                                <span>13</span>
+                                <p>初七</p>
+                            </li>
+                            <li>
+                                <span>14</span>
+                                <p>初八</p>
+                            </li>
+                            <li>
+                                <span>15</span>
+                                <p>初九</p>
+                            </li>
+                            <li>
+                                <span>16</span>
+                                <p>初十</p>
+                            </li>
+                            <li>
+                                <span>17</span>
+                                <p>十一</p>
+                            </li>
+                            <li>
+                                <span>18</span>
+                                <p>十二</p>
+                            </li>
+                            <li class="make">
+                                <span>19</span>
+                                <p>十三</p>
+                            </li>
+                            <li>
+                                <span>20</span>
+                                <p>十四</p>
+                            </li>
+                            <li>
+                                <span>21</span>
+                                <p>十五</p>
+                            </li>
+                            <li>
+                                <span>22</span>
+                                <p>十六</p>
+                            </li>
+                            <li>
+                                <span>23</span>
+                                <p>十七</p>
+                            </li>
+                            <li>
+                                <span>24</span>
+                                <p>十八</p>
+                            </li>
+                            <li>
+                                <span>25</span>
+                                <p>十九</p>
+                            </li>
+                            <li>
+                                <span>26</span>
+                                <p>廿十</p>
+                            </li>
+                            <li>
+                                <span>27</span>
+                                <p>廿一</p>
+                            </li>
+                            <li>
+                                <span>28</span>
+                                <p>廿二</p>
+                            </li>
+                            <li>
+                                <span>29</span>
+                                <p>廿三</p>
+                            </li>
+                            <li>
+                                <span>30</span>
+                                <p>廿四</p>
+                            </li>
+                            <li></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m5_right">
+                    <p>汽车行业品牌榜</p>
+                    <div>
+                        <table border="1" bordercolor="#cacbcb">
+                            <tbody>
+                                <tr>
+                                    <th>排名</th>
+                                    <th>品牌</th>
+                                    <th>搜索指数</th>
+                                </tr>
+                                <tr>
+                                    <th>1</th>
+                                    <th>大众</th>
+                                    <th>
+                                        <span>48912001</span>
+                                        <div class="progress">
+                                            <p></p>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>2</th>
+                                    <th>丰田</th>
+                                    <th>
+                                        <span>29307333</span>
+                                        <div class="progress">
+                                            <p></p>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>3</th>
+                                    <th>奥迪</th>
+                                    <th>
+                                        <span>23139070</span>
+                                        <div class="progress">
+                                            <p></p>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>4</th>
+                                    <th>本田</th>
+                                    <th>
+                                        <span>22885564</span>
+                                        <div class="progress">
+                                            <p></p>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>5</th>
+                                    <th>福特</th>
+                                    <th>
+                                        <span>22324792</span>
+                                        <div class="progress">
+                                            <p></p>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>6</th>
+                                    <th>宝马</th>
+                                    <th>
+                                        <span>21444077</span>
+                                        <div class="progress">
+                                            <p></p>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>7</th>
+                                    <th>现代</th>
+                                    <th>
+                                        <span>20114969</span>
+                                        <div class="progress">
+                                            <p></p>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>8</th>
+                                    <th>起亚</th>
+                                    <th>
+                                        <span>19251689</span>
+                                        <div class="progress">
+                                            <p></p>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>9</th>
+                                    <th>奔驰</th>
+                                    <th>
+                                        <span>19172837</span>
+                                        <div class="progress">
+                                            <p></p>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>10</th>
+                                    <th>别克</th>
+                                    <th>
+                                        <span>18544027</span>
+                                        <div class="progress">
+                                            <p></p>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
