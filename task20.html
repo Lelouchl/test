@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task18</title>
+    <style>
+        #container>div {
+            font-size: 30px;
+            text-align: center;
+            line-height: 50px;
+            background-color: red;
+            color: #fff;
+            margin-right: 10px;
+            margin-top: 5px;
+            padding: 0 10px;
+            display: inline-block;
+        }
+        .select {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+<textarea id="numInput"></textarea>
+<button>左侧入</button>
+<button style="margin-right: 30px;">右侧入</button>
+<button>左侧出</button>
+<button>右侧出</button>
+<input type="text" id="search">
+<button>查询</button>
+<div id="container"></div>
+<script>
+    function addEvent(e,event,fn) {
+        if (e.addEventListener) {
+            e.addEventListener(event,fn,false);
+        }else if (e.attachEvent) {
+            e.attachEvent('on'+event,fn);
+        }else {
+            e['on'+event]=fn;
+        }
+    }
+    window.onload=function () {
+        var container=document.getElementById('container');
+        var buttons=document.getElementsByTagName('button');
+        var queue={
+            str:[],
+            paint: function () {
+                var str='';
+                for (var key in this.str) {
+                    str+='<div>'+this.str[key]+'</div>';
+                }
+                container.innerHTML=str;
+                addDivDelEvent();
+            },
+            leftPush: function (num) {
+                for (var i=num.length-1;i>=0;i--){
+                    this.str.unshift(num[i]);
+                }
+                this.paint();
+            },
+            rightPush: function (num) {
+                for (var i=0;i<num.length;i++){
+                    this.str.push(num[i]);
+                }
+                this.paint();
+            },
+            isEmpty: function () {
+                return (this.str.length==0);
+            },
+            leftPop: function () {
+                if (!this.isEmpty()) {
+                    alert(this.str.shift());
+                    this.paint();
+                }else {
+                    alert('队列为空!');
+                }
+            },
+            rightPop: function () {
+                if (!this.isEmpty()) {
+                    alert(this.str.pop());
+                    this.paint();
+                }else {
+                    alert('队列为空!');
+                }
+            },
+            deleteId: function (id) {
+                this.str.splice(id,1);
+                this.paint();
+            }
+        };
+        function addDivDelEvent() {
+            for (var i=0;i<container.childNodes.length;i++) {
+                addEvent(container.childNodes[i],'click',function (i) {
+                    return function () {
+                        return queue.deleteId(i);
+                    }
+                }(i));
+            }
+        }
+        function render(e) {
+            var container=document.getElementById('container');
+            queue.paint();
+            for (var i=0;i<container.childNodes.length;i++){
+                container.childNodes[i].innerHTML=container.childNodes[i].innerHTML.replace(new RegExp(e,'g'),'<span class="select">'+e+'</span>');
+            }
+        }
+        var search=document.getElementById('search');
+        addEvent(buttons[0],'click',function () {
+            var input=document.getElementById('numInput').value;
+            input=input.split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/);
+            queue.leftPush(input);
+        });
+        addEvent(buttons[1],'click',function () {
+            var input=document.getElementById('numInput').value;
+            input=input.split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/);
+            queue.rightPush(input);
+        });
+        addEvent(buttons[2],'click',function () {
+            queue.leftPop();
+        });
+        addEvent(buttons[3],'click',function () {
+            queue.rightPop();
+        });
+        addEvent(buttons[4],'click',function () {
+            render(search.value);
+        });
+    }
+</script>
+</body>
+</html>
