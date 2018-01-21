@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task22</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        .one {
+            width: 1000px;
+            height: 300px;
+            margin: 100px auto;
+        }
+        div {
+            border: 2px solid gray;
+            display: flex;
+            margin: 36px 24px;
+            flex-grow: 1;
+        }
+        button {
+            margin: 0 20px;
+            width: 50px;
+            height: 40px;
+        }
+    </style>
+</head>
+<body>
+<div class="one">
+    <div class="two">
+        <div class="three">
+            <div class="four"></div>
+            <div class="four"></div>
+        </div>
+        <div class="three">
+            <div class="four"></div>
+            <div class="four"></div>
+        </div>
+    </div>
+    <div class="two">
+        <div class="three">
+            <div class="four"></div>
+            <div class="four"></div>
+        </div>
+        <div class="three">
+            <div class="four"></div>
+            <div class="four"></div>
+        </div>
+    </div>
+</div>
+<button>前序</button>
+<button>中序</button>
+<button>后序</button>
+<script>
+
+    function $(e) {
+        return document.querySelector(e);
+    }
+    function $$(e) {
+        return document.querySelectorAll(e);
+    }
+    //兼容事件绑定
+    function addEvent(e,event,fn) {
+        if (e.addEventListener) {
+            e.addEventListener(event,fn,false);
+        }else if (e.attachEvent) {
+            e.attachEvent('on'+event,fn);
+        }else {
+            e['on'+event]=fn;
+        }
+    }
+    var divList=[];
+    //前序遍历
+    function preOrder(node) {
+        if (node!=null) {
+            divList.push(node);
+            preOrder(node.firstElementChild);
+            preOrder(node.lastElementChild);
+        }
+    }
+
+    //中序遍历
+    function inOrder(node) {
+        if (node!=null) {
+            inOrder(node.firstElementChild);
+            divList.push(node);
+            inOrder(node.lastElementChild);
+        }
+    }
+
+    //后序遍历
+    function postOrder(node) {
+        if (node!=null) {
+            postOrder(node.firstElementChild);
+            postOrder(node.lastElementChild);
+            divList.push(node);
+        }
+    }
+
+    //颜色变化
+    var timer;
+    function changeColor() {
+        var i=0;
+        divList[i].style.backgroundColor='blue';
+        timer=setInterval(function () {
+            i++;
+            if (i<divList.length) {
+                divList[i-1].style.backgroundColor='#fff';
+                divList[i].style.backgroundColor='blue';
+            }else {
+                clearInterval(timer);
+                divList[divList.length-1].style.backgroundColor='#fff';
+            }
+        },500);
+    }
+
+    //初始化
+    function reset() {
+        clearInterval(timer);
+        divList=[];
+        for (var i=0;i<$$('div').length;i++) {
+            $$('div')[i].style.backgroundColor='#fff';
+        }
+    }
+
+    //绑定点击事件
+    addEvent($$('button')[0],'click',function () {
+        reset();
+        preOrder($('.one'));
+        changeColor();
+    });
+    addEvent($$('button')[1],'click',function () {
+        reset();
+        inOrder($('.one'));
+        changeColor();
+    });
+    addEvent($$('button')[2],'click',function () {
+        reset();
+        postOrder($('.one'));
+        changeColor();
+    });
+</script>
+</body>
+</html>
