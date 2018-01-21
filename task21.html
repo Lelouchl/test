@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task21</title>
+    <style>
+        #tagDiv>div,#hobbyDiv>div {
+            font-size: 30px;
+            text-align: center;
+            line-height: 50px;
+            background-color: skyblue;
+            color: #fff;
+            margin-right: 10px;
+            margin-top: 5px;
+            padding: 0 10px;
+            display: inline-block;
+        }
+        #hobbyDiv>div {
+            background-color: #f7ce8c;
+        }
+        #hobby {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+<input type="text" id="tag">
+<div id="tagDiv"></div>
+<textarea id="hobby"></textarea><br>
+<button id="hobbyButton">确认兴趣爱好</button>
+<div id="hobbyDiv"></div>
+<script>
+    function addEvent(e,event,fn) {
+        if (e.addEventListener) {
+            e.addEventListener(event,fn,false);
+        }else if (e.attachEvent) {
+            e.attachEvent('on'+event,fn);
+        }else {
+            e['on'+event]=fn;
+        }
+    }
+
+    var $=function (e) {
+        return document.querySelector(e);
+    };
+
+    function Queue(container,isDel) {
+        this.str=[];
+        this.paint=function () {
+            var str='';
+            for (var key in this.str) {
+                str+='<div>'+this.str[key]+'</div>';
+            }
+            container.innerHTML=str;
+            if (isDel){
+                addDivDelEvent(this,container);
+            }
+        };
+        this.rightPush=function (num) {
+            for (var i=0;i<num.length;i++){
+                if (this.str.indexOf(num[i])===-1 && num[i]!=='') {
+                    if (this.str.length>=10) {
+                        this.str.shift();
+                    }
+                    this.str.push(num[i]);
+                }
+            }
+            this.paint();
+        };
+        this.leftPop=function () {
+            this.str.shift();
+            this.paint();
+        };
+        this.deleteId=function (id) {
+            this.str.splice(id,1);
+            this.paint();
+        };
+    }
+
+    function addDivDelEvent(Queue,container) {
+        for (var i=0;i<container.childNodes.length;i++) {
+            addEvent(container.childNodes[i],'click',function (i) {
+                return function () {
+                    return Queue.deleteId(i);
+                }
+            }(i));
+            addEvent(container.childNodes[i],'mouseover',function (i) {
+                return function () {
+                    container.childNodes[i].style.backgroundColor='red';
+                    container.childNodes[i].innerHTML='删除：'+Queue.str[i];
+                }
+            }(i));
+            addEvent(container.childNodes[i],'mouseout',function (i) {
+                return function () {
+                    container.childNodes[i].style.backgroundColor='skyblue';
+                    container.childNodes[i].innerHTML=Queue.str[i];
+                }
+            }(i));
+        }
+    }
+
+    function trim(str) {
+        var reg1=/^\s*/;
+        var reg2=/\s*$/;
+        return (str.replace(reg1,'')).replace(reg2,'');
+    }
+
+    function splitInput(str) {
+        var arr=[];
+        arr=str.split(/[,，;；、\s\n]+/);
+        return arr;
+    }
+
+    var tagQueue=new Queue($('#tagDiv'),true);
+    var hobbyQueue=new Queue($('#hobbyDiv'),false);
+
+    addEvent($('#hobbyButton'),'click',function () {
+        var hobby=splitInput(trim($('#hobby').value));
+        hobbyQueue.rightPush(hobby);
+    });
+
+    addEvent($('#tag'),'keyup',function (e) {
+        if (/[,，;；、\s\n]+/.test($('#tag').value) || e.keyCode===13) {
+            var tag=[];
+            tag[0]=splitInput($('#tag').value)[0];
+            tagQueue.rightPush(tag);
+            $('#tag').value='';
+        }
+    });
+    
+</script>
+</body>
+</html>
