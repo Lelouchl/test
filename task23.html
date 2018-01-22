@@ -105,32 +105,21 @@
             bfs(node.firstElementChild);
         }
     }
+    
     //颜色变化,搜索函数
     var timer;
     var lock=0;
     function changeColor(search,value) {
         var i=0;
-        if (search) {
-            if(divList[i].firstChild.nodeValue.replace(/^\s*|\s*$/g,'') == value){
-                divList[i].className+=' found';
-                divList[i].style.backgroundColor=divList[i].className.indexOf('found') == -1 ? 'blue' : 'red';
-                lock++;
-                return;
-            }
-        }
-        if (!search) {
-            divList[i].style.backgroundColor='blue';
-        }
         timer=setInterval(function () {
-            i++;
             if (i<divList.length) {
-                if (divList[i-1].className.indexOf('found') == -1) {
+                if (divList[i-1] && divList[i-1].className.indexOf('found') == -1) {
                     divList[i-1].style.backgroundColor='#fff';
                 }
                 divList[i].style.backgroundColor='blue';
                 if (search) {
                     if(divList[i].firstChild.nodeValue.replace(/^\s*|\s*$/g,'') == value){
-                        divList[i].className+=' found';
+                        divList[i].className='found';
                         divList[i].style.backgroundColor=divList[i].className.indexOf('found') == -1 ? 'blue' : 'red';
                         lock++;
                     }
@@ -146,7 +135,8 @@
                 clearInterval(timer);
                 divList[divList.length-1].style.backgroundColor='#fff';
             }
-        },500);
+            i++;
+        },50);
     }
 
     //初始化
