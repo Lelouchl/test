@@ -8,28 +8,15 @@
             text-align: center;
         }
         div {
-            border: 2px solid #000;
+            border: 1px solid #000;
             display: flex;
             flex-grow: 1;
             margin: 5px 5px;
             justify-content: center;
         }
-        .one {
-            height: 100px;
+        #container {
             margin-top: 100px;
-            border-color: pink;
-        }
-        .two {
-            border-color: green;
-        }
-        .three {
-            border-color: skyblue;
-        }
-        .four {
-            border-color: gray;
-        }
-        .five {
-            border-color: orange;
+            height: 100px;
         }
         button {
             margin-top: 100px;
@@ -117,37 +104,43 @@
             node=divList[bfsnum++];
             bfs(node.firstElementChild);
         }
-        console.log(divList,bfsnum);
     }
     //颜色变化,搜索函数
     var timer;
     var lock=0;
     function changeColor(search,value) {
         var i=0;
-        divList[i].style.backgroundColor='blue';
         if (search) {
             if(divList[i].firstChild.nodeValue.replace(/^\s*|\s*$/g,'') == value){
-                divList[i].style.backgroundColor='red';
+                divList[i].className+=' found';
+                divList[i].style.backgroundColor=divList[i].className.indexOf('found') == -1 ? 'blue' : 'red';
                 lock++;
                 return;
             }
         }
+        if (!search) {
+            divList[i].style.backgroundColor='blue';
+        }
         timer=setInterval(function () {
             i++;
             if (i<divList.length) {
-                divList[i-1].style.backgroundColor='#fff';
+                if (divList[i-1].className.indexOf('found') == -1) {
+                    divList[i-1].style.backgroundColor='#fff';
+                }
                 divList[i].style.backgroundColor='blue';
                 if (search) {
                     if(divList[i].firstChild.nodeValue.replace(/^\s*|\s*$/g,'') == value){
-                        divList[i].style.backgroundColor='red';
+                        divList[i].className+=' found';
+                        divList[i].style.backgroundColor=divList[i].className.indexOf('found') == -1 ? 'blue' : 'red';
                         lock++;
-                        clearInterval(timer);
                     }
                 }
             }else {
                 if(search) {
                     if (!lock) {
                         alert('没有目标项！');
+                    }else {
+                        alert('找到'+lock+'个目标项！');
                     }
                 }
                 clearInterval(timer);
@@ -163,6 +156,7 @@
         bfsnum=0;
         lock=0;
         for (var i=0;i<$$('div').length;i++) {
+            $$('div')[i].className='';
             $$('div')[i].style.backgroundColor='#fff';
         }
     }
@@ -170,22 +164,22 @@
     //绑定点击事件
     addEvent($$('button')[0],'click',function () {
         reset();
-        dfs($('.one'));
+        dfs($('#container'));
         changeColor();
     });
     addEvent($$('button')[1],'click',function () {
         reset();
-        bfs($('.one'));
+        bfs($('#container'));
         changeColor();
     });
     addEvent($$('button')[2],'click',function () {
         reset();
-        dfs($('.one'));
+        dfs($('#container'));
         changeColor(true,$('#search').value);
     });
     addEvent($$('button')[3],'click',function () {
         reset();
-        bfs($('.one'));
+        bfs($('#container'));
         changeColor(true,$('#search').value);
     });
 </script>
