@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>task23</title>
+    <title>task24</title>
     <style>
         body {
             text-align: center;
@@ -15,11 +15,12 @@
             justify-content: center;
         }
         #container {
-            margin-top: 100px;
             height: 100px;
+            margin: 0;
         }
         button {
-            margin-top: 100px;
+            margin-top: 50px;
+            margin-bottom: 50px;
         }
     </style>
 </head>
@@ -28,7 +29,10 @@
 <button>广度优先遍历</button>
 <input type="text" id="search">
 <button>深度优先搜索</button>
-<button>广度优先搜索</button>
+<button>广度优先搜索</button><br>
+<button>删除节点</button>
+<input type="text" id="add">
+<button>添加节点</button>
 <div class="one" id="container">
     super
     <div class="two">
@@ -151,6 +155,45 @@
         }
     }
 
+    //点击选定节点
+    var selectDiv;
+    window.onload = function(){
+        addEvent($('#container'),'click',function(e){
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            reset();
+            if(target.nodeName.toLowerCase() == 'div'){
+                target.style.backgroundColor='#fef9d1';
+                selectDiv=target;
+            }
+        });
+    };
+    
+    //删除节点
+    function deleteDiv() {
+        if (selectDiv==undefined) {
+            alert('请选择要删除的节点');
+        }else {
+            selectDiv.parentNode.removeChild(selectDiv);
+            selectDiv=undefined;
+        }
+    }
+
+    //增加节点
+    function addDiv() {
+        if (selectDiv==undefined) {
+            alert('请选择要删除的节点');
+        }else if ($('#add').value=='') {
+            alert('请输入增加的节点的内容');
+        }else {
+            var newDiv=document.createElement('div');
+            newDiv.innerHTML=$('#add').value;
+            selectDiv.appendChild(newDiv);
+            reset();
+            selectDiv.style.backgroundColor='#fef9d1';
+        }
+    }
+
     //绑定点击事件
     addEvent($$('button')[0],'click',function () {
         reset();
@@ -171,6 +214,12 @@
         reset();
         bfs($('#container'));
         changeColor(true,$('#search').value);
+    });
+    addEvent($$('button')[4],'click',function () {
+        deleteDiv();
+    });
+    addEvent($$('button')[5],'click',function () {
+        addDiv();
     });
 </script>
 </body>
