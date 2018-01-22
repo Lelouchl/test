@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task23</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        div {
+            border: 2px solid #000;
+            display: flex;
+            flex-grow: 1;
+            margin: 5px 5px;
+            justify-content: center;
+        }
+        .one {
+            height: 100px;
+            margin-top: 100px;
+            border-color: pink;
+        }
+        .two {
+            border-color: green;
+        }
+        .three {
+            border-color: skyblue;
+        }
+        .four {
+            border-color: gray;
+        }
+        .five {
+            border-color: orange;
+        }
+        button {
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+<button>深度优先遍历</button>
+<button>广度优先遍历</button>
+<input type="text" id="search">
+<button>深度优先搜索</button>
+<button>广度优先搜索</button>
+<div class="one" id="container">
+    super
+    <div class="two">
+        cat
+        <div class="three">
+            apple
+            <div class="four">pear</div>
+            <div class="four">pig</div>
+            <div class="four">cola</div>
+            <div class="four">soccer</div>
+        </div>
+        <div class="three">phone</div>
+        <div class="three">
+            <div class="four">book</div>
+            <div class="four">school</div>
+        </div>
+    </div>
+    <div class="two">
+        note
+        <div class="three">
+            human
+            <div class="four">code</div>
+            <div class="four">operate</div>
+            <div class="four">man</div>
+        </div>
+        <div class="three">
+            program
+            <div class="four">
+                bement
+                <div class="five">cat</div>
+            </div>
+            <div class="four">glass</div>
+        </div>
+    </div>
+    <div class="two">fish</div>
+</div>
+
+<script>
+
+    function $(e) {
+        return document.querySelector(e);
+    }
+    function $$(e) {
+        return document.querySelectorAll(e);
+    }
+    //兼容事件绑定
+    function addEvent(e,event,fn) {
+        if (e.addEventListener) {
+            e.addEventListener(event,fn,false);
+        }else if (e.attachEvent) {
+            e.attachEvent('on'+event,fn);
+        }else {
+            e['on'+event]=fn;
+        }
+    }
+    var divList=[];
+    //深度优先遍历
+    function dfs(node) {
+        if (node && node.nodeName=='DIV') {
+            divList.push(node);
+            for (var i=0;i<node.children.length;i++) {
+                dfs(node.children[i]);
+            }
+        }
+    }
+
+    //广度优先遍历
+    var bfsnum=0;
+    function bfs(node) {
+        if (node && node.nodeName=='DIV') {
+            divList.push(node);
+            bfs(node.nextElementSibling);
+            node=divList[bfsnum++];
+            bfs(node.firstElementChild);
+        }
+        console.log(divList,bfsnum);
+    }
+    //颜色变化,搜索函数
+    var timer;
+    var lock=0;
+    function changeColor(search,value) {
+        var i=0;
+        divList[i].style.backgroundColor='blue';
+        if (search) {
+            if(divList[i].firstChild.nodeValue.replace(/^\s*|\s*$/g,'') == value){
+                divList[i].style.backgroundColor='red';
+                lock++;
+                return;
+            }
+        }
+        timer=setInterval(function () {
+            i++;
+            if (i<divList.length) {
+                divList[i-1].style.backgroundColor='#fff';
+                divList[i].style.backgroundColor='blue';
+                if (search) {
+                    if(divList[i].firstChild.nodeValue.replace(/^\s*|\s*$/g,'') == value){
+                        divList[i].style.backgroundColor='red';
+                        lock++;
+                        clearInterval(timer);
+                    }
+                }
+            }else {
+                if(search) {
+                    if (!lock) {
+                        alert('没有目标项！');
+                    }
+                }
+                clearInterval(timer);
+                divList[divList.length-1].style.backgroundColor='#fff';
+            }
+        },500);
+    }
+
+    //初始化
+    function reset() {
+        clearInterval(timer);
+        divList=[];
+        bfsnum=0;
+        lock=0;
+        for (var i=0;i<$$('div').length;i++) {
+            $$('div')[i].style.backgroundColor='#fff';
+        }
+    }
+
+    //绑定点击事件
+    addEvent($$('button')[0],'click',function () {
+        reset();
+        dfs($('.one'));
+        changeColor();
+    });
+    addEvent($$('button')[1],'click',function () {
+        reset();
+        bfs($('.one'));
+        changeColor();
+    });
+    addEvent($$('button')[2],'click',function () {
+        reset();
+        dfs($('.one'));
+        changeColor(true,$('#search').value);
+    });
+    addEvent($$('button')[3],'click',function () {
+        reset();
+        bfs($('.one'));
+        changeColor(true,$('#search').value);
+    });
+</script>
+</body>
+</html>
