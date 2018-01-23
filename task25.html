@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task25</title>
+    <style>
+        span {
+            margin: 0;
+            padding: 0;
+        }
+        #tree-module {
+            display: inline-block;
+            width: 400px;
+        }
+        #result {
+            font-size: 14px;
+            text-align: center;
+            height: 16px;
+        }
+        .nodebody-visible {
+            display: flex;
+            flex-direction: column;
+            margin: 5px 18px;
+        }
+        .node-header {
+            height: 20px;
+        }
+        .nodebody-hidden {
+            display: none;
+        }
+        .arrow {
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .right-arrow {
+            width: 0;
+            height: 0;
+            border-left: 10px solid #6898c2;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            cursor: pointer;
+        }
+        .down-arrow {
+            width: 0;
+            height: 0;
+            border-top: 10px solid #6898c2;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            cursor: pointer;
+        }
+        .empty-arrow {
+            border-left: 10px solid transparent;
+        }
+        .node-title {
+            font-size: 14px;
+            color: #6898c2;
+            line-height: 1.5em;
+        }
+        .node-title:hover {
+            color: blue;
+            cursor: pointer;
+        }
+        .node-title-highlight {
+            color: red;
+            font-weight: bold;
+        }
+        .addIcon,.deleteIcon {
+            display: none;
+            vertical-align: top;
+            cursor: pointer;
+        }
+        .node-header:hover>.addIcon, .node-header:hover>.deleteIcon {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+<fieldset id="tree-module">
+    <legend>树形组件</legend>
+    <input type="text" id="searchText">&nbsp;&nbsp;
+    <button id="search">搜索</button>&nbsp;&nbsp;
+    <button id="clear">清除搜索</button>
+    <br>
+    <p id="result"></p>
+    <div id="tree-area">
+        <div class="nodebody-visible">
+            <label class="node-header">
+                <div class="arrow down-arrow"></div>
+                <span class="node-title">AAA</span>
+                <span>&nbsp;&nbsp;</span>
+                <img class="addIcon" src="image/task25-add.png">
+            </label>
+        </div>
+    </div>
+</fieldset>
+
+<script>
+    function $(e) {
+        return document.querySelector(e);
+    }
+    function $$(e) {
+        return document.querySelectorAll(e);
+    }
+    //兼容事件绑定
+    function addEvent(e,event,fn) {
+        if (e.addEventListener) {
+            e.addEventListener(event,fn,false);
+        }else if (e.attachEvent) {
+            e.attachEvent('on'+event,fn);
+        }else {
+            e['on'+event]=fn;
+        }
+    }
+
+    function TreeNode(obj) {
+        this.parent=obj.parent;
+        this.childs=obj.childs || [];
+        this.data=obj.data || '';
+        this.selfElement=obj.selfElement;
+        this.selfElement.TreeNode=this;
+    }
+
+    //原型封装
+    TreeNode.prototype = {
+        constructor:TreeNode,
+        //样式
+        render:function (arrow,visibility,toHighlight,deHighlight) {
+            if (arguments.length<3) {
+                toHighlight=false;
+                deHighlight=false;
+            }
+            if (arrow) {
+                if (this.isLeaf()) {
+                    this.selfElement.getElementsByClassName('arrow')[0].className='arrow empty-arrow';
+                }else if (this.isFolded()) {
+                    this.selfElement.getElementsByClassName('arrow')[0].className='arrow right-arrow';
+                }else {
+                    this.selfElement.getElementsByClassName('arrow')[0].className='arrow down-arrow';
+                }
+            }
+            if (visibility) {
+                if (this.selfElement.className.indexOf('nodebody-visible') == -1) {
+                    this.selfElement.className=this.selfElement.className.replace('hidden','visible');
+                }else {
+                    this.selfElement.className=this.selfElement.className.replace('visible','hidden');
+                }
+            }
+            if (toHighlight) {
+                this.selfElement.getElementsByClassName('node-title')[0].className='node-title node-title-highlight';
+            }
+            if (deHighlight) {
+                this.selfElement.getElementsByClassName('node-title')[0].className='node-title';
+            }
+        },
+        deleteNode:function () {
+            this.parent.selfElement.removeChild(this.selfElement);
+            for (var i=0;i<this.parent.childs.length;i++) {
+                if (this.parent.childs[i] == this) {
+                    console.log(this.parent.childs[i],1111,this);
+                    this.parent.childs.splice(i,1);
+                    break;
+                }
+            }
+            this.parent.render(true,false);
+        },
+        addChild:function (text) {
+//            if (text==null) {
+//                return this;
+//            }
+            if (text.trim()=='') {
+                alert('请输入节点内容！');
+                return this;
+            }
+            if (!this.isLeaf() && this.isFolded()) {
+                this.toggleFold();
+            }
+            var NewNode=document.createElement('div');
+            NewNode.className='nodebody-visible';
+            NewNode.innerHTML= '<label class="node-header"><div class="arrow empty-arrow"></div><span class="node-title">'+text+'</span><span>&nbsp;&nbsp;</span><img class="addIcon" src="image/task25-add.png"><img class="deleteIcon" src="image/task25-delete.png"></label>';
+            this.selfElement.appendChild(NewNode);
+            this.childs.push(new TreeNode({parent:this,childs:[],data:text,selfElement:NewNode}));
+            this.render(true,false);
+            return this;
+        },
+        toggleFold:function () {
+            if (this.isLeaf()) {
+                return this;
+            }
+            for (var i=0;i<this.childs.length;i++) {
+                this.childs[i].render(false,true);
+            }
+            this.render(true,false);
+            return this;
+        },
+        isLeaf:function () {
+            return this.childs.length==0;
+        },
+        isFolded:function () {
+            if (this.isLeaf()) {
+                return false;
+            }
+            if (this.childs[0].selfElement.className == 'nodebody-visible') {
+                return false;
+            }
+            return true;
+        }
+    };
+
+    var root=new TreeNode({parent:null,childs:[],data:'AAA',selfElement:$('.nodebody-visible')});
+    var selectNode;
+    addEvent(root.selfElement,'click',function (e) {
+        var e= e || event;
+        var target = e.target || e.srcElement;
+        var domNode = target;
+        while (domNode.className.indexOf("nodebody") == -1) {
+            domNode=domNode.parentNode;
+        }
+        selectNode=domNode.TreeNode;
+        if (target.className.indexOf('node-title') != -1  || target.className.indexOf('arrow') != -1) {
+            selectNode.toggleFold();
+        }else if (target.className=='addIcon') {
+            selectNode.addChild(prompt('请输入子节点的内容:'));
+        }else if (target.className=='deleteIcon') {
+            selectNode.deleteNode();
+        }
+    });
+
+    //绑定搜索函数
+    root.search=function (query) {
+        var resultList=[];
+        var queue=[];
+        var current=this;
+        queue.push(current);
+        while (queue.length>0) {
+            current=queue.shift();
+            current.render(false,false,false,true);
+            if (current.data==query) {
+                resultList.push(current);
+            }
+            for (var i=0;i<current.childs.length;i++) {
+                queue.push(current.childs[i]);
+            }
+        }
+        return resultList;
+    };
+    //搜索并显示结果
+    addEvent($('#search'),'click',function () {
+        var text=$('#searchText').value.trim();
+        console.log($('#searchText').value);
+        if (text=='') {
+            $('#result').innerHTML='请输入查询内容！';
+            return;
+        }
+        var resultList=root.search(text);
+        if (resultList.length==0) {
+            $('#result').innerHTML='没有找到符合条件的节点！';
+        }else {
+            $('#result').innerHTML='找到'+resultList.length+'符合条件的节点！';
+            var pathNode;
+            for (var i=0;i<resultList.length;i++) {
+                pathNode=resultList[i];
+                pathNode.render(false,false,true,false);
+                while (pathNode.parent!=null) {
+                    if (pathNode.selfElement.className=='nodebody-hidden') {
+                        pathNode.parent.toggleFold();
+                    }
+                    pathNode=pathNode.parent;
+                }
+            }
+        }
+    });
+    //清除搜索
+    addEvent($('#clear'),'click',function () {
+        $('#searchText').value='';
+        root.search(null);
+        $('#result').innerHTML='';
+    });
+
+    //生成Demo树
+    root.addChild("BBB").addChild("CCC").addChild("DDD");
+    root.childs[0].addChild("B1").addChild("B2").addChild("B3").addChild("B4").addChild("B5");
+    root.childs[0].childs[4].addChild("B51").toggleFold();
+    root.childs[1].addChild("C1").addChild("C2").addChild("C3").toggleFold();
+    root.childs[2].addChild("D1").addChild("D2").addChild("D3").toggleFold();
+    root.childs[2].childs[2].addChild("D31").toggleFold();
+
+</script>
+</body>
+</html>
