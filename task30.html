@@ -145,7 +145,6 @@
         addEvent($('#input'+i),'focus',function (i) {//闭包才能获取i
             return function () {
                 return $('#tip'+i).innerHTML=hintText[i-1].hint,$('#tip'+i).style.color='#999',$('#input'+i).style.borderColor='#999';
-
             }
         }(i));
         addEvent($('#input'+i),'blur',function (i) {
