@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task30</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        #container {
+            display: inline-block;
+            text-align: right;
+
+        }
+        .label {
+            display: inline-block;
+            font-weight: bold;
+        }
+        .label:first-of-type {
+            margin-top: 100px;
+        }
+        .label>input {
+            margin-left: 20px;
+            margin-right: 20px;
+            width: 500px;
+            height: 40px;
+            border-radius: 10px;
+            outline: none;
+            border: 2px solid #999;
+            padding-left: 20px;
+        }
+        #btn {
+            margin-top: 50px;
+            border: none;
+            background-color: #2f79ba;
+            height: 44px;
+            width: 70px;
+            color: #fff;
+            border-radius: 10px;
+            outline: none;
+            cursor: pointer;
+        }
+        .label>p {
+            font-weight: normal;
+            color: #999;
+            text-align: left;
+            margin-left: 60px;
+        }
+        .label>#tip3 {
+            padding-left: 32px;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <label class="label">
+        名称
+        <input type="text" id="input1">
+        <p id="tip1"></p>
+    </label><br>
+    <label class="label">
+        密码
+        <input type="password" id="input2">
+        <p id="tip2"></p>
+    </label><br>
+    <label class="label">
+        密码确认
+        <input type="password" id="input3">
+        <p id="tip3"></p>
+    </label><br>
+    <label class="label">
+        邮箱
+        <input type="text" id="input4">
+        <p id="tip4"></p>
+    </label><br>
+    <label class="label">
+        手机
+        <input type="text" id="input5">
+        <p id="tip5"></p>
+    </label><br>
+</div>
+<br>
+<button id="btn">提交</button>
+<script>
+    function $(e) {
+        return document.querySelector(e);
+    }
+    function $$(e) {
+        return document.querySelectorAll(e);
+    }
+    //兼容事件绑定
+    function addEvent(e,event,fn) {
+        if (e.addEventListener) {
+            e.addEventListener(event,fn,false);
+        }else if (e.attachEvent) {
+            e.attachEvent('on'+event,fn);
+        }else {
+            e['on'+event]=fn;
+        }
+    }
+    //提示数据
+    var hintText=[
+        {hint:'必填，长度为4-16个字符',right:'名称格式正确',wrong:'名称格式有误',isPass:false},
+        {hint:'必填，长度为4-16个字符',right:'密码格式正确',wrong:'密码格式有误',isPass:false},
+        {hint:'必填，再次输入密码',right:'两次密码输入一致',wrong:'两次密码输入不一致',isPass:false},
+        {hint:'必填，xxx@xxx.xxx',right:'邮箱格式正确',wrong:'邮箱格式有误',isPass:false},
+        {hint:'必填，长度为11位数字',right:'手机格式正确',wrong:'手机格式有误',isPass:false}
+    ];
+    //检查函数
+    function checkValue(id) {
+        var flag=false,
+            input=$('#input'+id),
+            tip=$('#tip'+id);
+        switch (parseInt(id)) {
+            case 1:
+                flag=/^[a-zA-Z0-9_]{4,16}$/.test(input.value.replace(/[\u4e00-\u9fa5]/g,'nn'));
+                break;
+            case 2:
+                flag=/^\S{4,16}$/.test(input.value);
+                break;
+            case 3:
+                flag=$('#input2').value==input.value;
+                break;
+            case 4:
+                flag=/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/.test(input.value);
+                break;
+            case 5:
+                flag=/^[1][0-9]{10}$/.test(input.value);
+                break;
+        }
+        if (flag) {
+            input.style.borderColor='#6BC058';
+            tip.style.color='#6BC058';
+            tip.innerHTML=hintText[id-1].right;
+            hintText[id-1].isPass=true;
+        }else {
+            input.style.borderColor='red';
+            tip.style.color='red';
+            tip.innerHTML=hintText[id-1].wrong;
+            hintText[id-1].isPass=false;
+        }
+    }
+    //绑定事件
+    for (var i=1;i<$$('input').length+1;i++){
+        addEvent($('#input'+i),'focus',function (i) {//闭包才能获取i
+            return function () {
+                return $('#tip'+i).innerHTML=hintText[i-1].hint,$('#tip'+i).style.color='#999',$('#input'+i).style.borderColor='#999';
+
+            }
+        }(i));
+        addEvent($('#input'+i),'blur',function (i) {
+            return function () {
+                return checkValue(i);
+            }
+        }(i));
+    }
+    addEvent($('#btn'),'click',function () {
+        var check=0;
+        var subText='';
+        for (var i=0;i<hintText.length;i++) {
+            if (hintText[i].isPass) {
+                check++;
+            }else {
+                subText+=hintText[i].wrong+'！\n';
+            }
+        }
+        if (check==5) {
+            alert('提交成功！');
+        }else {
+            alert('提交失败！\n\n'+subText+'\n请重新输入！');
+        }
+    });
+</script>
+</body>
+</html>
