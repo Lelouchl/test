@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task31</title>
+    <style>
+        select,#corporation {
+            width: 200px;
+            height: 40px;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        #corporation {
+            box-sizing: border-box;
+        }
+        fieldset {
+            text-align: center;
+            border: none;
+        }
+        fieldset#student {
+            margin-top: 100px;
+        }
+        fieldset#college,fieldset#company {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<form action="">
+    <fieldset id="student">
+        <label for="undergraduate"><input type="radio" id="undergraduate" value="在校生" name="people">在校生</label>
+        <label for="graduate"><input type="radio" id="graduate" value="非在校生" name="people">非在校生</label>
+    </fieldset>
+    <fieldset id="college">
+        <label for="city">你的城市：
+            <select name="city" id="city">
+                <option value="aaa" selected>aaa</option>
+                <option value="bbb">bbb</option>
+                <option value="ccc">ccc</option>
+                <option value="ddd">ddd</option>
+                <option value="eee">eee</option>
+            </select>
+        </label>
+        <label for="school">你的学校：
+            <select name="school" id="school"></select>
+        </label>
+    </fieldset>
+    <fieldset id="company">
+        <label for="corporation">你就职的公司：<input type="text" id="corporation" name="corporation" placeholder="请填写公司名称"></label>
+    </fieldset>
+</form>
+<script>
+    function $(e) {
+        return document.querySelector(e);
+    }
+    function $$(e) {
+        return document.querySelectorAll(e);
+    }
+    //兼容事件绑定
+    function addEvent(e,event,fn) {
+        if (e.addEventListener) {
+            e.addEventListener(event,fn,false);
+        }else if (e.attachEvent) {
+            e.attachEvent('on'+event,fn);
+        }else {
+            e['on'+event]=fn;
+        }
+    }
+    var cityAndCollege=[
+        ['aaa','a1','a2','a3','a4'],
+        ['bbb','b1','b2','b3','b4'],
+        ['ccc','c1','c2','c3','c4'],
+        ['ddd','d1','d2','d3','d4'],
+        ['eee','e1','e2','e3','e4']
+    ];
+    function showCollege(obj,sub) {
+        sub.innerHTML='';
+        var option;
+        for (var i=1;i<cityAndCollege[obj.selectedIndex].length;i++) {
+            option=document.createElement('option');
+            option.innerHTML=cityAndCollege[obj.selectedIndex][i];
+            sub.appendChild(option);
+        }
+    }
+    //事件委托
+    addEvent($('#student'),'click',function (e) {
+        var e=e||event,
+            target=e.target||e.srcElement;
+        if (target.tagName=='INPUT') {
+            var cur;
+            for (var i=0;i<$$('input').length;i++) {
+                if ($$('input')[i].checked) {
+                    cur=$$('input')[i].value;
+                    break;
+                }
+            }
+            if (cur=='在校生') {
+                $('#college').style.display='block';
+                showCollege($('#city'),$('#school'));
+                $('#company').style.display='none';
+            }else if (cur=='非在校生') {
+                $('#college').style.display='none';
+                $('#company').style.display='block';
+            }
+        }
+    });
+    addEvent($('#city'),'change',function () {
+        showCollege($('#city'),$('#school'));
+    });
+</script>
+</body>
+</html>
