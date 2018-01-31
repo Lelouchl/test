@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Microsoft YaHei", sans-serif;
+}
+div {
+    text-align: center;
+}
+table {
+    margin: 50px auto;
+    border-collapse: collapse;
+}
+#tab td {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+#tab tr:nth-child(n+2) td:nth-child(n+2) {
+    border: 1px solid #aaa;
+}
+#tab tr:first-child td:nth-child(n+2),#tab tr:last-child td:nth-child(n+2) {
+    border-bottom: 2px solid #000;
+}
+#tab tr:nth-child(n+2) td:first-child,#tab tr:nth-child(n+2) td:last-child {
+    border-right: 2px solid #000;
+}
+.Left,.Top,.Bottom,.Right {
+    position: relative;
+    background-color: red;
+}
+.Left>div,.Top>div,.Bottom>div,.Right>div {
+    position: absolute;
+    background-color: blue;
+}
+.Left>div,.Right>div {
+    width: 10px;
+    height: 100%;
+    top: 0;
+}
+.Top>div,.Bottom>div {
+    height: 10px;
+    width: 100%;
+}
+.Left>div {
+    left: 0;
+}
+.Right>div {
+    right: 0;
+}
+.Top>div {
+    top: 0;
+}
+.Bottom>div {
+    bottom: 0;
+}
+#message {
+    text-align: left;
+    display: inline-block;
+}
