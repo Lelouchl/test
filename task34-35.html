@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task34-35</title>
+    <link rel="stylesheet" href="css/task35.css">
+</head>
+<body>
+<div class="container">
+    <table id="tab" class="tab"></table>
+    <div id="boxbot"></div>
+</div>
+<div id="inputArea">
+    <ol id="index">
+        <li>1</li>
+    </ol>
+    <label for="command">
+        <textarea name="command" id="command"></textarea>
+    </label><br>
+    <button id="sure">执行</button>
+    <button id="reset">清空</button>
+</div>
+<div class="clearfix"></div>
+<div>
+    <p>指令</p>
+    <p id="message">
+        GO：向蓝色边所面向的方向前进一格<br>
+        TUN LEF：向左转（逆时针旋转90度）<br>
+        TUN RIG：向右转（顺时针旋转90度）<br>
+        TUN BAC：向右转（旋转180度）<br>
+        TRA LEF：向屏幕的左侧移动一格，方向不变<br>
+        TRA TOP：向屏幕的上面移动一格，方向不变<br>
+        TRA RIG：向屏幕的右侧移动一格，方向不变<br>
+        TRA BOT：向屏幕的下面移动一格，方向不变<br>
+        MOV LEF：方向转向屏幕左侧，并向屏幕的左侧移动一格<br>
+        MOV TOP：方向转向屏幕上面，向屏幕的上面移动一格<br>
+        MOV RIG：方向转向屏幕右侧，向屏幕的右侧移动一格<br>
+        MOV BOT：方向转向屏幕下面，向屏幕的下面移动一格<br><br>
+        对于GO，TRA以及MOV指令增加可以移动格子数量的参数，例如<br>
+        GO 3：向当前方向前进三格<br>
+        TRA TOP 2：向屏幕上方平移两格<br>
+        MOV RIG 4：方向转向屏幕右侧，向屏幕的右侧移动四格
+    </p>
+</div>
+<script src="js/task35.js"></script>
+</body>
+</html>
