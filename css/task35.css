@@ -89,6 +89,7 @@ table {
     background-color: #cccccc;
     height: 500px;
     min-width: 30px;
+    overflow: hidden;
 }
 #index li {
     line-height: 30px;

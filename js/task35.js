@@ -206,22 +206,33 @@ function boxCommand(command) {
 }
 //运行指令
 function runCommand(commandArray) {
-    for (var i=0;i<commandArray.length;i++) {
-        commandArray[i].trim();
-        if (commandArray[i].match(/\d/)) {
-            var x=commandArray[i].match(/\d/);
-            var cmd=commandArray[i].split(' '+x)[0];
-            var j=0;
-            setInterval(function () {
+    var i=0,
+        j=0,
+        cmd,
+        x;
+    setInterval(function () {
+        if (i<commandArray.length) {
+            commandArray[i].trim();
+            if (commandArray[i].match(/\d/)) {
+                x=commandArray[i].match(/\d/);
+                cmd=commandArray[i].split(' '+x)[0];
                 if (j<x) {
                     boxCommand(cmd);
                     j++;
+                }else {
+                    j=0;
+                    i++;
                 }
-            },1000);
-        }else {
-            boxCommand(commandArray[i]);
+            }else {
+                boxCommand(commandArray[i]);
+                i++;
+            }
         }
-    }
+    },1000);
+}
+//同步滚动
+function syncScroll() {
+    $('#index').scrollTop=$('#command').scrollTop;
 }
 //初始化
 function reset() {
@@ -242,5 +253,7 @@ addEvent($('#sure'),'click',function () {
     }
 });
 addEvent($('#reset'),'click',reset);
+//添加滚动事件
+addEvent($('#command'),'scroll',syncScroll);
 //随机创建方块
 Square.move();
