@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task38</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        th,td {
+            border: 2px solid #999;
+            text-align: center;
+            width: 80px;
+            height: 30px;
+        }
+        th {
+            background-color: #000;
+            color: #fff;
+        }
+        .upSort {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 10px solid skyblue;
+        }
+        .downSort {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 10px solid skyblue;
+        }
+    </style>
+</head>
+<body>
+<table id="tab"></table>
+<script>
+    function $(e) {
+        return document.querySelector(e);
+    }
+    function $$(e) {
+        return document.querySelectorAll(e);
+    }
+    //兼容事件绑定
+    function addEvent(e,event,fn) {
+        if (e.addEventListener) {
+            e.addEventListener(event,fn,false);
+        }else if (e.attachEvent) {
+            e.attachEvent('on'+event,fn);
+        }else {
+            e['on'+event]=fn;
+        }
+    }
+    var sortTable=function (tableEle,data,names,fnSort) {
+        this.tableEle=tableEle;
+        this.data=data;
+        this.names=names;
+        this.fnSort=fnSort;
+        this.curOrder=null;
+
+        this.init();
+    };
+
+    sortTable.prototype={
+        init:function () {
+            this.curOrder=[];
+            for (var key in this.data) {
+                this.curOrder.push(key);
+            }
+            this.render();
+        },
+        render:function () {
+            function fn(d) {
+                return '<td>'+d+'</td>';
+            }
+            var items='<tr>';
+            items+=this.names.map(function (d) {
+                return '<th>'+d+'</th>';
+            }).join('');
+            items+='</tr>';
+            for (var i=0;i<this.curOrder.length;i++) {
+                items+='<tr><td>'+this.curOrder[i]+'</td>';
+                items+=this.data[this.curOrder[i]].map(fn).join('');
+                items+='</tr>';
+            }
+            this.tableEle.innerHTML=items;
+            this.addSortEle();
+        },
+        addSortEle:function () {
+            var self=this;
+            function addArrowCom(index) {
+                var div1=document.createElement('div'),
+                    div2=document.createElement('div');
+                div1.className='upSort';
+                div2.className='downSort';
+                var td=self.tableEle.children[0].children[0].children[index];
+                td.appendChild(div1);
+                td.appendChild(div2);
+                var fn=self.fnSort(self.names[index]);
+                addEvent(div1,'click',function () {
+                    self.curOrder.sort(function (a,b) {
+                        return -fn(self.data[a][index-1],self.data[b][index-1]);
+                    });
+                    self.render();
+                });
+                addEvent(div2,'click',function () {
+                    self.curOrder.sort(function (a,b) {
+                        return fn(self.data[a][index-1],self.data[b][index-1]);
+                    });
+                    self.render();
+                });
+            }
+            for (var i=0;i<this.names.length;i++) {
+                var name=this.names[i];
+                var fn=this.fnSort(name);
+                if (fn) {
+                    addArrowCom(i);
+                }
+            }
+        }
+    };
+    function randomScore(n) {
+        var arr=[],
+            sum=0;
+        for (var i=0;i<n;i++) {
+            var num=Math.floor(Math.random()*101);
+            sum+=num;
+            arr.push(num);
+        }
+        arr.push(sum);
+        return arr;
+    }
+    var scoreData={
+        '大娃': randomScore(3),
+        '二娃': randomScore(3),
+        '三娃': randomScore(3),
+        '四娃': randomScore(3),
+        '五娃': randomScore(3),
+        '六娃': randomScore(3),
+        '七娃': randomScore(3),
+        '八娃': randomScore(3),
+        '九娃': randomScore(3),
+        '十娃': randomScore(3),
+        '十一娃': randomScore(3),
+        '十二娃': randomScore(3),
+        '十三娃': randomScore(3),
+        '十四娃': randomScore(3),
+    };
+    var names=['姓名','语文','数学','英语','总分'];
+    var getSort=function (name) {
+        if (name==names[0]) {
+            return;
+        }
+        return function (a,b) {
+            return b-a;
+        }
+    };
+    var table=new sortTable($('#tab'),scoreData,names,getSort);
+</script>
+</body>
+</html>
