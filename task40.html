@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task40-41</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        input {
+            margin: 100px;
+            padding: 4px;
+        }
+        .calendar {
+            background-color: #fff;
+            float: left;
+            border: 1px solid blue;
+            position: relative;
+            padding: 10px;
+        }
+        .calendar dl,.calendar dd {
+            width: 183px;
+            font-size: 12px;
+            line-height: 22px;
+        }
+        .calendar dt.title-date {
+            display: block;
+            font-weight: bold;
+            position: relative;
+            margin-bottom: 5px;
+            padding-bottom: 3px;
+            width: 100%;
+        }
+        .calendar dt {
+            float: left;
+            width: 26px;
+            text-align: center;
+        }
+        .calendar dd {
+            clear: both;
+            width: 183px;
+            height: 139px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .prevyear,.nextyear,.prevmonth,.nextmonth {
+            cursor: pointer;
+            height: 9px;
+            background: url("image/task40-1.png") no-repeat;
+            overflow: hidden;
+            position: absolute;
+            top: 8px;
+        }
+        .prevyear {
+            left: 4px;
+            width: 9px;
+        }
+        .nextyear {
+            right: 5px;
+            width: 9px;
+            background-position: -19px 0;
+        }
+        .prevmonth {
+            left: 20px;
+            width: 5px;
+            background-position: -9px 0;
+        }
+        .nextmonth {
+            right: 20px;
+            width: 5px;
+            background-position: -14px 0;
+        }
+        .calendar dd a {
+            float: left;
+            width: 26px;
+            height: 23px;
+            overflow: hidden;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+        .calendar dd a.live {
+            color: #000;
+            cursor: pointer;
+        }
+        .calendar dd a.disabled {
+            color: rgb(186, 201, 207);
+        }
+        .calendar dd a.tody {
+            color: #fff;
+            background: rgb(204, 155, 41);
+        }
+        .calendar dd a.tody:hover {
+            background: rgb(204, 155, 41);
+        }
+        .calendar dd a.live:hover {
+            color: #fff;
+            background: #6fa3ff;
+        }
+    </style>
+</head>
+<body>
+<input type="text" id="j_Date1" class="input">
+<input type="text" id="j_Date2" class="input">
+<script>
+    function $(e) {
+        return document.querySelector(e);
+    }
+    function $$(e) {
+        return document.querySelectorAll(e);
+    }
+    //兼容事件绑定
+    function addEvent(e,event,fn) {
+        if (e.addEventListener) {
+            e.addEventListener(event,fn,false);
+        }else if (e.attachEvent) {
+            e.attachEvent('on'+event,fn);
+        }else {
+            e['on'+event]=fn;
+        }
+    }
+    //获取元素位置
+    function getPos(node) {
+        var scrollx=document.documentElement.scrollLeft,
+            scrolly=document.documentElement.scrollTop,
+            pos=node.getBoundingClientRect();
+        return {
+            top:pos.top+scrolly,
+            right:pos.right+scrollx,
+            bottom:pos.bottom+scrolly,
+            left:pos.left+scrollx
+        };
+    }
+    function Calender() {
+        this.init.apply(this,arguments);
+    }
+    Calender.prototype={
+        //模板
+        template:[
+            '<dl>',
+            '<dt class="title-date">',
+            '<span class="prevyear"></span><span class="prevmonth"></span>',
+            '<span class="nextyear"></span><span class="nextmonth"></span>',
+            '</dt>',
+            '<dt><strong>日</strong></dt>',
+            '<dt>一</dt>',
+            '<dt>二</dt>',
+            '<dt>三</dt>',
+            '<dt>四</dt>',
+            '<dt>五</dt>',
+            '<dt><strong>六</strong></dt>',
+            '<dd></dd>',
+            '</dl>'
+        ],
+        init:function (options) {
+            this.id=options.id;
+            this.input=$('#'+this.id);
+            this.isSelect=options.isSelect;
+            this.inputEvent();
+        },
+        //表单事件
+        inputEvent:function () {
+            var that=this;
+            addEvent(this.input,'focus',function () {
+                that.createContainer();
+                that.drawDate(new Date());
+            });
+        },
+        //创建日期盒子
+        createContainer:function () {
+            var oDiv=$('#'+this.id+'-date');
+            if (oDiv) {
+                oDiv.parentNode.removeChild(oDiv);
+            }
+            var container=this.container=document.createElement('div');
+            container.id=this.id+'-date';
+            container.style.position='absolute';
+            container.zIndex=100;
+            var inputPos=getPos(this.input);
+            container.style.left=inputPos.left+'px';
+            container.style.top=inputPos.bottom-1+'px';
+            addEvent(container,'click',function (e) {
+                var e=e||event;
+                e.stopPropagation ? e.stopPropagation() : e.cancelBubble=true;
+            });
+            document.body.appendChild(container);
+        },
+        drawDate:function (odate) {
+            var dateWarp,
+                titleDate,
+                dd,
+                year,
+                month,
+                date,
+                days,
+                prevdays,
+                weekStart,
+                i,
+                ddHtml=[],
+                textNode,
+                nowDate=new Date(),
+                nowYear=nowDate.getFullYear(),
+                nowMonth=nowDate.getMonth()+1,
+                nowdate=nowDate.getDate();
+            this.dateWarp=dateWarp=document.createElement('div');
+            dateWarp.className='calendar';
+            dateWarp.innerHTML=this.template.join('');
+            this.year=year=odate.getFullYear();
+            this.month=month=odate.getMonth()+1;
+            this.date=date=odate.getDate();
+            this.titleDate=titleDate=dateWarp.querySelector('.title-date');
+            if (this.isSelect) {
+                var selectHtml=[];
+                selectHtml.push('<select>');
+                for (i=2020;i>1970;i--) {
+                    if (i!=this.year) {
+                        selectHtml.push('<option value="'+i+'">'+i+'</option>');
+                    }else {
+                        selectHtml.push('<option value="'+i+'" selected>'+i+'</option>');
+                    }
+                }
+                selectHtml.push('</select>');
+                selectHtml.push('年');
+                selectHtml.push('<select>');
+                for (i=1;i<=12;i++) {
+                    if (i!=this.month) {
+                        selectHtml.push('<option value="'+i+'">'+i+'</option>');
+                    }else {
+                        selectHtml.push('<option value="'+i+'" selected>'+i+'</option>');
+                    }
+                }
+                selectHtml.push('</select>');
+                selectHtml.push('月');
+                titleDate.innerHTML=selectHtml.join('');
+                this.selectChange();
+            }else {
+                textNode=document.createTextNode(year+'年'+month+'月');
+                titleDate.appendChild(textNode);
+                this.btnEvent();
+            }
+            this.dd=dd=dateWarp.querySelector('dd');
+            //当前月的第0天即上个月最后一天,获取本月天数
+            days=new Date(year,month,0).getDate();
+            weekStart=new Date(year,month-1,1).getDay();
+            //空白日期
+            prevdays=new Date(year,month-1,0).getDate();
+            for (i=0;i<weekStart;i++) {
+                ddHtml.unshift('<a class="disabled">'+prevdays+'</a>');
+                prevdays--;
+            }
+            for (i=1;i<=days;i++) {
+                if (year<nowYear) {
+                    ddHtml.push('<a class="live disabled">'+i+'</a>');
+                }else if (year==nowYear) {
+                    if (month<nowMonth) {
+                        ddHtml.push('<a class="live disabled">'+i+'</a>');
+                    }else if (month==nowMonth) {
+                        if (i<nowdate) {
+                            ddHtml.push('<a class="live">'+i+'</a>');
+                        }else if (i==nowdate) {
+                            ddHtml.push('<a class="live tody">'+i+'</a>');
+                        }else if (i>nowdate) {
+                            ddHtml.push('<a class="live">'+i+'</a>');
+                        }
+                    }else if (month>nowMonth) {
+                        ddHtml.push('<a class="live">'+i+'</a>');
+                    }
+                }else if (year>nowYear) {
+                    ddHtml.push('<a class="live">'+i+'</a>');
+                }
+            }
+            for (i=1;i<=42-days-weekStart;i++) {
+                ddHtml.push('<a class="disabled">'+i+'</a>');
+            }
+            dd.innerHTML=ddHtml.join('');
+            this.removeDate();
+            this.container.appendChild(dateWarp);
+            this.linkOn();
+            this.outClick();
+        },
+        selectChange:function () {
+            var selects,
+                yearSelect,
+                monthSelect,
+                that=this;
+            selects=this.dateWarp.querySelectorAll('select');
+            yearSelect=selects[0];
+            monthSelect=selects[1];
+            addEvent(yearSelect,'change',function () {
+                var year=yearSelect.value;
+                var month=monthSelect.value;
+                that.drawDate(new Date(year,month-1,that.date));
+            });
+            addEvent(monthSelect,'change',function () {
+                var year=yearSelect.value;
+                var month=monthSelect.value;
+                that.drawDate(new Date(year,month-1,that.date));
+            });
+        },
+        removeDate:function () {
+            var oDiv=this.container.querySelector('.calendar');
+            if (oDiv) {
+                this.container.removeChild(oDiv);
+            }
+        },
+        btnEvent:function () {
+            var prevyear=this.dateWarp.querySelector('.prevyear'),
+                prevmonth=this.dateWarp.querySelector('.prevmonth'),
+                nextyear=this.dateWarp.querySelector('.nextyear'),
+                nextmonth=this.dateWarp.querySelector('.nextmonth'),
+                that=this;
+            addEvent(prevyear,'click',function () {
+                var idate=new Date(that.year-1,that.month-1,that.date);
+                that.drawDate(idate);
+            });
+            addEvent(prevmonth,'click',function () {
+                var idate=new Date(that.year,that.month-2,that.date);
+                that.drawDate(idate);
+            });
+            addEvent(nextyear,'click',function () {
+                var idate=new Date(that.year+1,that.month-1,that.date);
+                that.drawDate(idate);
+            });
+            addEvent(nextmonth,'click',function () {
+                var idate=new Date(that.year,that.month,that.date);
+                that.drawDate(idate);
+            });
+        },
+        linkOn:function () {
+            var links=$$('.live'),
+                i,
+                l=links.length,
+                that=this;
+            for (i=0;i<l;i++) {
+                links[i].index=i;
+                addEvent(links[i],'click',function () {
+                    that.date=this.innerHTML;
+                    that.input.value=that.year+'-'+that.month+'-'+that.date;
+                    that.removeDate();
+                });
+            }
+        },
+        outClick:function () {
+            var that=this;
+            addEvent(document,'click',function (e) {
+                var e=e||event;
+                var target=e.target||e.srcElement;
+                if (target==that.input) {
+                    return;
+                }
+                that.removeDate();
+            });
+        }
+    };
+    var myDate1 = new Calender({
+        id: 'j_Date1',
+        isSelect: false
+    });
+    var myDate2 = new Calender({
+        id: 'j_Date2',
+        isSelect: true
+    });
+</script>
+</body>
+</html>
