@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task42</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        #mainDiv {
+            position: relative;
+            
+        }
+        #input1 {
+            text-align: center;
+            width: 350px;
+            height: 30px;
+        }
+        #calendarEle {
+            width: 350px;
+            height: 480px;
+            border: 2px solid lightgray;
+            position: absolute;
+            z-index: 100;
+            top: 40px;
+            background-color: #fff;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        #p1 {
+            text-align: center;
+            margin: 0;
+            padding: 5px;
+            background-color: rgb(200,27,1);
+            color: #fff;
+        }
+        #arrLeft {
+            float: left;
+            cursor: pointer;
+        }
+        #arrRight {
+            float: right;
+            cursor: pointer;
+        }
+        .weekday {
+            text-align: center;
+            display: inline-block;
+            margin: 3px 0;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+        }
+        .weekend {
+            color: rgb(200,17,1);
+        }
+        .dates {
+            text-align: center;
+            display: inline-block;
+            margin: 3px 0;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            cursor: pointer;
+        }
+        #btnSure,#btnCancel {
+            float: left;
+            width: 120px;
+            height: 36px;
+            margin: 5px 24px;
+            background-color: rgb(56,186,125);
+            outline: none;
+            border: none;
+            color: #fff;
+        }
+        #btnCancel {
+            float: right;
+            background-color: rgb(243,69,65);
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <div id="mainDiv">
+        <input type="text" id="input1" readonly="readonly">
+        <div id="calendarEle">
+            <p id="p1">
+                <strong id="title">1</strong>
+                <strong id="arrLeft"><-</strong>
+                <strong id="arrRight">-></strong>
+            </p>
+        </div>
+    </div>
+</div>
+<script src="js/jquery-3.2.1.min.js"></script>
+<script>
+    //兼容事件绑定
+    function addEvent(e,event,fn) {
+        if (e.addEventListener) {
+            e.addEventListener(event,fn,false);
+        }else if (e.attachEvent) {
+            e.attachEvent('on'+event,fn);
+        }else {
+            e['on'+event]=fn;
+        }
+    }
+    var DatePicker=function (container,multi,min,max) {
+        this.container=container;
+        this.multi=multi;
+        this.min=min||0;
+        this.max=max||0;
+        this.date=new Date();
+        this.selectedEle=null;
+        this.selectCall=null;
+        this.mainDiv=null;
+        this.selectedDates=[];
+        this.init();
+    };
+    DatePicker.prototype={
+        days:['日','一','二','三','四','五','六'],
+        init:function () {
+            this.mainDiv=$('#mainDiv');
+            var self=this,
+                arrLeft=$('#arrLeft')[0],
+                arrRight=$('#arrRight')[0],
+                calendarEle=$('#calendarEle')[0],
+                input=$('#input1')[0],
+                btnSure,
+                btnCancel;
+            addEvent(arrLeft,'click',function () {
+                self.preMonth();
+            });
+            addEvent(arrRight,'click',function () {
+                self.nextMonth();
+            });
+            for (var i=0;i<7;i++) {
+                var el=document.createElement('span');
+                el.className='weekday';
+                el.innerHTML=this.days[i];
+                if (i==0||i==6) {
+                    el.className='weekday weekend';
+                }
+                calendarEle.appendChild(el);
+            }
+            for (var i=0;i<42;i++) {
+                var el=document.createElement('span');
+                el.className='dates';
+                calendarEle.appendChild(el);
+            }
+            btnSure=document.createElement('button');
+            btnSure.innerHTML='确定';
+            btnSure.id='btnSure';
+            calendarEle.appendChild(btnSure);
+            addEvent(btnSure,'click',function () {
+                input.value=self.getSelectedDate();
+                calendarEle.style.display='none';
+            });
+            btnCancel=document.createElement('button');
+            btnCancel.innerHTML='取消';
+            btnCancel.id='btnCancel';
+            calendarEle.appendChild(btnCancel);
+            addEvent(btnCancel,'click',function () {
+                calendarEle.style.display='none';
+            });
+            this.renderByDate(this.date);
+
+            calendarClicked=function (e) {
+                var e=e||event;
+                var target=e.target||e.srcElement;
+                if (calendarEle.style.display=='none') {
+                    return;
+                }
+                if (target.nodeName=='SPAN') {
+                    var allSpan=self.mainDiv.find('span'),
+                        index=allSpan.index($(target)),
+                        selectedIndex=allSpan.index(self.selectedEle);
+                    var dat=new Date(self.date);
+                    dat.setDate(dat.getDate()+index-selectedIndex);
+                    if (self.multi) {
+                        if (self.selectedDates.length<1) {
+                            self.selectedDates.push(dat);
+                        }else  {
+                            var preDate=self.selectedDates[self.selectedDates.length-1];
+                            var dayNum=Math.abs(dat-preDate)/1000/60/60/24;
+                            if (dayNum<self.min||dayNum>self.max) {
+                                alert('时间跨度不在范围内');
+                            }else {
+                                self.selectedDates.push(dat);
+                            }
+                        }
+                        if (self.selectedDates.length>2) {
+                            self.selectedDates.shift();
+                        }
+                    }else {
+                        self.selectedDates[0]=dat;
+                    }
+                    self.selectDate(dat);
+                }
+            };
+            addEvent(calendarEle,'click',calendarClicked);
+            addEvent(input,'click',function () {
+                if (calendarEle.style.display==='none') {
+                    calendarEle.style.display='';
+                }else if (calendarEle.style.display!=='none') {
+                    calendarEle.style.display='none';
+                }
+            });
+        },
+        select:function (fn) {
+            this.selectCall=fn;
+            return this;
+        },
+        nextMonth:function () {
+            var dat=new Date(this.date);
+            dat.setMonth(dat.getMonth()+1);
+            this.selectDate(dat);
+        },
+        preMonth:function () {
+            var dat=new Date(this.date);
+            dat.setMonth(dat.getMonth()-1);
+            this.selectDate(dat);
+        },
+        getSelectedDate:function () {
+            function getString(date) {
+                var y=date.getFullYear(),
+                    m=date.getMonth()+1,
+                    d=date.getDate();
+                return y+'年'+(m<10 ? '0'+m : m)+'月'+(d<10 ? '0'+d : d)+'日';
+            }
+            if (this.multi) {
+                if (this.selectedDates.length==2) {
+                    var dat1=this.selectedDates[0],
+                        dat2=this.selectedDates[1];
+                    if (dat1>dat2) {
+                        return getString(dat2)+'-'+getString(dat1);
+                    }else {
+                        return getString(dat1)+'-'+getString(dat2);
+                    }
+                }
+            }else {
+                return getString(this.date);
+            }
+        },
+        selectDate:function (date) {
+            this.renderByDate(date);
+            this.date=date;
+        },
+        renderByDate:function (date) {
+            this.mainDiv.find('#title').html(date.getFullYear() + '年' + (date.getMonth() + 1) + '月');
+            var dat=new Date(date);
+            dat.setDate(dat.getDate()-date.getDate()+1);
+            dat.setDate(dat.getDate()-dat.getDay());
+            var allSpan=this.mainDiv.find('span');
+            for (var i=0;i<42;i++) {
+                var ele=$(allSpan.get(i+7)).html(dat.getDate());
+                if (date.getTime()==dat.getTime()) {
+                    this.selectedEle=ele;
+                }
+                if (this.selectedDates[0]&&dat.getTime()===this.selectedDates[0].getTime()||
+                    this.selectedDates[1]&&dat.getTime()===this.selectedDates[1].getTime()) {
+                    ele.css('background-color','rgb(200,27,1)').css('color','white');
+                }else {
+                    if (this.selectedDates.length===2&&this.selectedDates[0]>dat&&this.selectedDates[1]<dat||
+                        this.selectedDates.length===2&&this.selectedDates[1]>dat&&this.selectedDates[0]<dat) {
+                        ele.css('background-color','rgb(235,244,249)');
+                    }else {
+                        ele.css('background-color','').css('color','');
+                    }
+                    if (dat.getMonth()!==date.getMonth()) {
+                        ele.css('color','lightgray');
+                    }else {
+                        if (dat.getDay()==0||dat.getDay()==6) {
+                            ele.css('color','rgb(200,27,1)');
+                        }else {
+                            ele.css('color','');
+                        }
+                    }
+                }
+                dat.setDate(dat.getDate()+1);
+            }
+        }
+    };
+    var dp1=new DatePicker($('#container'),true,3,100);
+</script>
+</body>
+</html>
