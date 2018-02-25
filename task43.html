@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task43</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        .Jigsaw {
+            position: relative;
+            margin: 50px auto;
+            overflow: hidden;
+        }
+        .Jigsaw .imgCover {
+            background: no-repeat center center;
+            background-size: cover;
+            height: 100%;
+            border: 0 solid #fff;
+            transition: all .2s ease-in-out;
+            transform: translate3d(0,0,0);
+            cursor: pointer;
+        }
+        .Jigsaw .imgCover:hover {
+            z-index: 2;
+            border-width: 1rem;
+            border-bottom-width: 3rem;
+        }
+        .Jigsaw .imgCover:hover:after {
+            content: attr(data-alt);
+            color: #CFCECC;
+            font-weight: 300;
+            font-size: 1.2rem;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            padding: 1rem 1rem;
+            width: 100%;
+            text-align: right;
+            margin-bottom: -3.3rem;
+            box-sizing: border-box;
+        }
+        .Jigsaw.layout-1 .imgCover {
+            width: 100%;
+        }
+        .Jigsaw.layout-2 .imgCover:nth-child(1) {
+            clip-path: polygon(0 0,66.66% 0,33.33% 100%,0 100%);
+            -webkit-clip-path: polygon(0 0,66.66% 0,33.33% 100%,0 100%);
+        }
+        .Jigsaw.layout-2 .imgCover:nth-child(1):hover:after {
+            text-align: left;
+        }
+        .Jigsaw.layout-2 .imgCover:last-child {
+            transform: translateY(-100%);
+            clip-path: polygon(66.66% 0,100% 0,100% 100%,33.33% 100%);
+            -webkit-clip-path: polygon(66.66% 0,100% 0,100% 100%,33.33% 100%);
+        }
+        .Jigsaw.layout-3 .imgCover {
+            position: absolute;
+        }
+        .Jigsaw.layout-3 .imgCover:nth-child(2) {
+            right: 0;
+            top: 0;
+        }
+        .Jigsaw.layout-3 .imgCover:last-child {
+            right: 0;
+            bottom: 0;
+        }
+        .Jigsaw.layout-4 .imgCover {
+            width: 50%;
+            height: 50%;
+            float: left;
+        }
+        .Jigsaw.layout-5 .imgCover {
+            width: 50%;
+            height: 50%;
+            float: left;
+        }
+        .Jigsaw.layout-5 .imgCover:nth-child(4),.Jigsaw.layout-5 .imgCover:nth-child(5) {
+            transform: translateY(-100%);
+        }
+        .Jigsaw.layout-6 .imgCover {
+            float: left;
+        }
+        #Jigsaw-pop {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            transform: scale(0);
+            z-index: 100;
+            transition: transform .2s ease-in-out;
+        }
+        #Jigsaw-pop.show {
+            transform: scale(1);
+        }
+        #Jigsaw-pop img {
+            display: block;
+            position: absolute;
+            width: 80%;
+            max-width: 80%;
+            max-height: 90%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+        }
+    </style>
+</head>
+<body>
+<div id="pic-1"></div>
+<div id="pic-2"></div>
+<div id="pic-3"></div>
+<div id="pic-4"></div>
+<div id="pic-5"></div>
+<div id="pic-6"></div>
+<script>
+    function $(e) {
+        return document.querySelector(e);
+    }
+    function $$(e) {
+        return document.querySelectorAll(e);
+    }
+    //兼容事件绑定
+    function addEvent(e,event,fn) {
+        if (e.addEventListener) {
+            e.addEventListener(event,fn,false);
+        }else if (e.attachEvent) {
+            e.attachEvent('on'+event,fn);
+        }else {
+            e['on'+event]=fn;
+        }
+    }
+
+    function Jigsaw(param) {
+        this.wrap=param.wrap;
+        this.imgList=param.imgList;
+        this.wrap.className='Jigsaw';
+        this.wrap.style.width=this.width=param.width || '960px';
+        this.wrap.style.height=this.height=param.height || '400px';
+        this.imgPop=$('#Jigsaw-pop')||null;
+
+        this.init();
+    }
+
+    Jigsaw.prototype={
+        prefix:'layout',
+        init:function () {
+            var that=this;
+            if (!this.imgPop) {
+                this.imgPop=document.createElement('div');
+                this.imgPop.id='Jigsaw-pop';
+                document.body.appendChild(this.imgPop);
+            }
+            addEvent(this.imgPop,'click',function (e) {
+                var e=e||event;
+                var target=e.target||e.srcElement;
+                if (target.id==='Jigsaw-pop') {
+                    that.imgPop.className=that.imgPop.className.replace('show','');
+                }
+            });
+            document.body.appendChild(this.imgPop);
+            this.layout();
+        },
+        layout:function () {
+            var divList=[],
+                that=this,
+                width=parseInt(this.width,10),
+                height=parseInt(this.height,10),
+                count=this.imgList.length,
+                i;
+            for (i=0;i<count;i++) {
+                var div=document.createElement('div');
+                div.className='imgCover';
+                div.style.backgroundImage='url('+this.imgList[i].src+')';
+                div.dataset.src=this.imgList[i].src;
+                div.dataset.alt=this.imgList[i].alt || '';
+                divList.push(div);
+            }
+            divList.forEach(function (item) {
+                addEvent(item,'click',function () {
+                    var img=document.createElement('img');
+                    that.imgPop.className='show';
+                    that.imgPop.innerHTML='';
+                    img.src=item.dataset.src;
+                    that.imgPop.appendChild(img);
+                });
+            });
+            switch (count) {
+                case 1:
+                    this.wrap.className+=' '+this.prefix+'-1';
+                    divList.forEach(function (item) {
+                        that.wrap.appendChild(item);
+                    });
+                    break;
+                case 2:
+                    this.wrap.className+=' '+this.prefix+'-2';
+                    divList.forEach(function (item) {
+                        that.wrap.appendChild(item);
+                    });
+                    break;
+                case 3:
+                    this.wrap.className+=' '+this.prefix+'-3';
+                    i=0;
+                    divList.forEach(function (item) {
+                        switch (i++) {
+                            case 0:
+                                item.style.width=width-(height/2)+'px';
+                                break;
+                            case 1:
+                                item.style.width=item.style.height=height/2+'px';
+                                break;
+                            case 2:
+                                item.style.width=item.style.height=height/2+'px';
+                                break;
+                        }
+                        that.wrap.appendChild(item);
+                    });
+                    break;
+                case 4:
+                    this.wrap.className+=' '+this.prefix+'-4';
+                    divList.forEach(function (item) {
+                        that.wrap.appendChild(item);
+                    });
+                    break;
+                case 5:
+                    this.wrap.className+=' '+this.prefix+'-5';
+                    i=0;
+                    divList.forEach(function (item) {
+                        switch (i++) {
+                            case 0:
+                                item.style.width=width*2/3+'px';
+                                item.style.height=height*2/3+'px';
+                                break;
+                            case 1:
+                                item.style.width=width/3+'px';
+                                item.style.height=width/3+'px';
+                                break;
+                            case 2:
+                                item.style.width=width/3+'px';
+                                item.style.height=height-width/3+'px';
+                                break;
+                            case 3:
+                            case 4:
+                                item.style.width=width/3+'px';
+                                item.style.height=height/3+'px';
+                                break;
+                        }
+                        that.wrap.appendChild(item);
+                    });
+                    break;
+                case 6:
+                    this.wrap.className+=' '+this.prefix+'-6';
+                    i=0;
+                    divList.forEach(function (item) {
+                        switch (i++) {
+                            case 0:
+                                item.style.width=width*2/3+'px';
+                                item.style.height=height*2/3+'px';
+                                break;
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                            case 5:
+                                item.style.width=width/3+'px';
+                                item.style.height=height/3+'px';
+                                break;
+                        }
+                        that.wrap.appendChild(item);
+                    });
+                    break;
+            }
+        }
+    };
+
+    var p1=new Jigsaw({
+        wrap:$('#pic-1'),
+        imgList:[{
+            src:'image/task43-1.jpg',
+            alt:'image alt'
+        }]
+    });
+    var p2=new Jigsaw({
+        wrap:$('#pic-2'),
+        height:'400px',
+        imgList:[{
+            src:'image/task43-1.jpg',
+            alt:'image alt'
+        },{
+            src:'image/task43-2.jpg',
+            alt:'image alt'
+        }]
+    });
+    var p3=new Jigsaw({
+        wrap:$('#pic-3'),
+        height:'400px',
+        imgList:[{
+            src:'image/task43-1.jpg',
+            alt:'image alt'
+        },{
+            src:'image/task43-2.jpg',
+            alt:'image alt'
+        },{
+            src:'image/task43-3.jpg',
+            alt:'image alt'
+        }]
+    });
+    var p4=new Jigsaw({
+        wrap:$('#pic-4'),
+        height:'400px',
+        imgList:[{
+            src:'image/task43-1.jpg',
+            alt:'image alt'
+        },{
+            src:'image/task43-2.jpg',
+            alt:'image alt'
+        },{
+            src:'image/task43-3.jpg',
+            alt:'image alt'
+        },{
+            src:'image/task43-4.jpg',
+            alt:'image alt'
+        }]
+    });
+    var p5=new Jigsaw({
+        wrap:$('#pic-5'),
+        height:'600px',
+        imgList:[{
+            src:'image/task43-1.jpg',
+            alt:'image alt'
+        },{
+            src:'image/task43-2.jpg',
+            alt:'image alt'
+        },{
+            src:'image/task43-3.jpg',
+            alt:'image alt'
+        },{
+            src:'image/task43-4.jpg',
+            alt:'image alt'
+        },{
+            src:'image/task43-5.jpg',
+            alt:'image alt'
+        }]
+    });
+    var p6=new Jigsaw({
+        wrap:$('#pic-6'),
+        height:'600px',
+        imgList:[{
+            src:'image/task43-1.jpg',
+            alt:'image alt'
+        },{
+            src:'image/task43-2.jpg',
+            alt:'image alt'
+        },{
+            src:'image/task43-3.jpg',
+            alt:'image alt'
+        },{
+            src:'image/task43-4.jpg',
+            alt:'image alt'
+        },{
+            src:'image/task43-5.jpg',
+            alt:'image alt'
+        },{
+            src:'image/task43-6.jpg',
+            alt:'image alt'
+        }]
+    });
+</script>
+</body>
+</html>
