@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>task44</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+        }
+        .btn {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .display {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .hidden {
+            display: none;
+        }
+        .waterfall {
+            overflow: auto;
+            margin: 0 auto;
+            width: 75%;
+        }
+        .waterfall img {
+            width: 100%;
+        }
+        .waterfallBox {
+            margin-top: 16px;
+        }
+        .waterfallColumn {
+            box-sizing: border-box;
+            padding: 8px;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+<div class="onload-bg">
+    <div class="onload"></div>
+</div>
+<div class="btn">
+    <button id="addCol">Add Column</button>
+    <button id="delCol">Del Column</button>
+    <button id="addBox">Add Box</button>
+</div>
+<div class="waterfall">
+    <div class="waterfallBox">
+        <img src="http://placehold.it/300x600/E97452/fff">
+    </div>
+    <div class="waterfallBox">
+        <img src="http://placehold.it/300x300/4C6EB4/fff">
+    </div>
+    <div class="waterfallBox">
+        <img src="http://placehold.it/300x250/449F93/fff">
+    </div>
+    <div class="waterfallBox">
+        <img src="http://placehold.it/200x320/936FBC/fff">
+    </div>
+    <div class="waterfallBox">
+        <img src="http://placehold.it/400x500/D25064/fff">
+    </div>
+    <div class="waterfallBox">
+        <img src="http://placehold.it/300x200/CF364A/fff">
+    </div>
+    <div class="waterfallBox">
+        <img src="http://placehold.it/300x400/E59649/fff">
+    </div>
+    <div class="waterfallBox">
+        <img src="http://placehold.it/350x500/75A0CC/fff">
+    </div>
+    <div class="waterfallBox">
+        <img src="http://placehold.it/300x200/4296AD/fff">
+    </div>
+    <div class="waterfallBox">
+        <img src="http://placehold.it/300x400/9FDBC7/fff">
+    </div>
+    <div class="waterfallBox">
+        <img src="http://placehold.it/300x300/4E8EF7/fff">
+    </div>
+</div>
+<div class="display hidden">
+    <img src="" alt="display">
+</div>
+<script>
+    function $(e) {
+        return document.querySelector(e);
+    }
+    function $$(e) {
+        return document.querySelectorAll(e);
+    }
+    //兼容事件绑定
+    function addEvent(e,event,fn) {
+        if (e.addEventListener) {
+            e.addEventListener(event,fn,false);
+        }else if (e.attachEvent) {
+            e.attachEvent('on'+event,fn);
+        }else {
+            e['on'+event]=fn;
+        }
+    }
+
+    function Waterfall(opts) {
+        this.column=opts.column;
+        this.container=opts.containerSelector;
+        this.boxes=opts.boxSelector;
+        this.compose();
+    }
+    Waterfall.prototype={
+        initColumn:function (columnNum) {
+            this.container.innerHTML='';
+            this.columns=[];
+            for (var i=0;i<columnNum;i++) {
+                var columnDiv=document.createElement('div');
+                columnDiv.style.width=(100/columnNum)+'%';
+                columnDiv.className='waterfallColumn';
+                this.columns.push(columnDiv);
+                this.container.appendChild(columnDiv);
+            }
+        },
+        getMinHeightIndex:function () {
+            var min=this.columns[0].clientHeight,
+                index=0;
+            for (var i=0;i<this.columns.length;i++) {
+                if (this.columns[i].clientHeight<min) {
+                    min=this.columns[i].clientHeight;
+                    index=i;
+                }
+            }
+            return index;
+        },
+        compose:function () {
+            this.initColumn(this.column);
+            for (var i=0;i<this.boxes.length;i++) {
+                var box=this.boxes[i];
+                this.addBox(box);
+            }
+        },
+        addBox:function (ele) {
+            var index=this.getMinHeightIndex(),
+                column=this.columns[index];
+            column.appendChild(ele);
+        }
+    };
+    function buttonEvent() {
+        addEvent($('.btn'),'click',function (e) {
+            var e=e||event,
+                target=e.target||e.srcElement;
+            switch (target.id) {
+                case 'addCol':
+                    waterfall.column++;
+                    waterfall.compose();
+                    break;
+                case 'delCol':
+                    if (waterfall.column>0) {
+                        waterfall.column--;
+                        waterfall.compose();
+                    }
+                    break;
+                case 'addBox':
+                    waterfall.addBox(newNode()());
+                    waterfall.boxes.push(newNode()());
+                    break;
+            }
+        });
+    }
+    function loadMore() {
+        addEvent(window,'scroll',function () {
+            var screenHeight=document.documentElement.scrollTop+document.documentElement.clientHeight,
+                container=waterfall.columns[waterfall.getMinHeightIndex()],
+                containerHeight=container.offsetTop+container.offsetHeight;
+            if (containerHeight<screenHeight) {
+                waterfall.addBox(newNode()());
+                waterfall.boxes.push(newNode()());
+            }
+        });
+    }
+    function newNode() {
+        
+    }
+    var waterfall=new Waterfall({
+        containerSelector:$('.waterfall'),
+        boxSelector:$$('.waterfallBox'),
+        column:4
+    });
+    buttonEvent();
+    loadMore();
+    displayImage();
+
+</script>
+</body>
+</html>
