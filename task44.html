@@ -187,8 +187,36 @@
             }
         });
     }
+    function displayImage() {
+        addEvent($('.waterfall'),'click',function (e) {
+            var e=e||event,
+                target=e.target||e.srcElement;
+            if (target.tagName=='IMG') {
+                $('.display').querySelector('img').src=target.src;
+                $('.display').className='display';
+            }
+
+        });
+        addEvent($('.display'),'click',function (e) {
+            var e=e||event,
+                target=e.target||e.srcElement;
+            if (target.tagName!='IMG') {
+                $('.display').className+=' hidden';
+            }
+        });
+    }
     function newNode() {
-        
+        var size=['600x250','300x400','350x500','200x320','300x300'],
+            color=['E97452', '4C6EB4', '449F93', 'D25064', 'E59649'],
+            i=parseInt(Math.random()*5);
+        return function () {
+            var box=document.createElement('div');
+            box.className='waterfallBox';
+            var img=document.createElement('img');
+            img.src='http://placehold.it/'+size[i]+'/'+color[i]+'/fff';
+            box.appendChild(img);
+            return box;
+        }
     }
     var waterfall=new Waterfall({
         containerSelector:$('.waterfall'),
